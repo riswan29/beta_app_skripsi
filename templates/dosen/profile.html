@@ -1,10 +1,30 @@
+{% comment %} {% block content %}
+    <h1>Profil Dosen</h1>
+
+        <p>NIM/NIDN: {{ user_profile.nim_nidn }}</p>
+        <p>Username: {{ user_profile.user.username }}</p>
+        <p>Role: {{ user_profile.get_role_display }}</p>
+
+        <input type="submit" name="edit" value="Edit">
+{% endblock content %} {% endcomment %}
+
+
 {% block content %}
-<h1>Profil Dosen</h1>
-<p>NIM/NIDN: {{ user_profile.nim_nidn }}</p>
-<p>Username: {{ user_profile.user.username }}</p>
-<p>Role: {{ user_profile.get_role_display }}</p>
-<!-- Tambahkan bidang profil tambahan yang perlu ditampilkan -->
+    <h1>Profil Dosen</h1>
+    {% if user_profile.full_name%}
+        <p>Nama: {{ user_profile.full_name }}</p>
+    {% endif %}
+    <p>NIDN: {{ user_profile.nim_nidn }}</p>
+    <p>Username: {{ user_profile.user.username }}</p>
+    <p>Role: {{ user_profile.get_role_display }}</p>
 
-<!-- Tambahkan bagian lain dari tampilan profil -->
+    {% if user_profile.alamat %}
+        <p>Alamat: {{ user_profile.alamat }}</p>
+    {% endif %}
 
+    {% if user_profile.gambar %}
+        <img src="{{ user_profile.gambar.url }}" alt="Profil Picture">
+    {% endif %}
+
+    <a href="{% url 'edit-dosen' %}">Edit</a>
 {% endblock content %}

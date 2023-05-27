@@ -26,3 +26,9 @@ class MahasiswaProfileForm(forms.ModelForm):
     class Meta:
         model = Mahasiswa
         fields = ['foto_profil', 'nama_lengkap', 'email']
+
+
+class UserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['full_name','gambar', 'alamat']

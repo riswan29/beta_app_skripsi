@@ -102,3 +102,20 @@ def dosenProfile(request):
         'user_profile': user_profile
     }
     return render(request, 'dosen/profile.html', context)
+
+def edit_dosen_profile(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = UserProfileEditForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileEditForm(instance=user_profile)
+
+    context = {
+        'form': form,
+        'user_profile': user_profile
+    }
+    return render(request, 'dosen/edit_profile.html', context)

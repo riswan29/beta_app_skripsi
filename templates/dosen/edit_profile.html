@@ -1,0 +1,16 @@
+{% block content %}
+    <h1>Edit Profil Dosen</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="nama">Nama Lengkap</label>
+        {{ form.full_name }}
+        <br>
+        <label for="nama">Gambar</label>
+        {{ form.gambar }}
+        <br>
+        <label for="nama">Alamat</label>
+        {{ form.alamat }}
+        <button type="submit">Simpan</button>
+    </form>
+{% endblock content %}
