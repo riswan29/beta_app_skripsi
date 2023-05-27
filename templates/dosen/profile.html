@@ -1,0 +1,10 @@
+{% block content %}
+<h1>Profil Dosen</h1>
+<p>NIM/NIDN: {{ user_profile.nim_nidn }}</p>
+<p>Username: {{ user_profile.user.username }}</p>
+<p>Role: {{ user_profile.get_role_display }}</p>
+<!-- Tambahkan bidang profil tambahan yang perlu ditampilkan -->
+
+<!-- Tambahkan bagian lain dari tampilan profil -->
+
+{% endblock content %}
