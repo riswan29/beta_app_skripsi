@@ -89,11 +89,8 @@ def update_profile(request):
 
     return render(request, 'mahasiswa/update_profile.html', {'form': form})
 
-@login_required
-def view_profile(request):
-    mahasiswa = request.user.mahasiswa
-    return render(request, 'mahasiswa/view_profile.html', {'mahasiswa': mahasiswa})
-################# Profiles #################
+
+################# Profiles dosen #################
 
 def dosenProfile(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -110,7 +107,7 @@ def edit_dosen_profile(request):
         form = UserProfileEditForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')
+            return redirect('profile_dsn')
     else:
         form = UserProfileEditForm(instance=user_profile)
 
@@ -119,3 +116,29 @@ def edit_dosen_profile(request):
         'user_profile': user_profile
     }
     return render(request, 'dosen/edit_profile.html', context)
+
+################# Profiles mahasiswa #################
+def mahasiswaProfile(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    print(user_profile)
+    context = {
+        'user_profile': user_profile
+    }
+    return render(request, 'mahasiswa/profile.html', context)
+
+def edit_mahasiswa_profile(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = UserProfileEditForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_mhs')
+    else:
+        form = UserProfileEditForm(instance=user_profile)
+
+    context = {
+        'form': form,
+        'user_profile': user_profile
+    }
+    return render(request, 'mahasiswa/edit_profile.html', context)

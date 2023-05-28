@@ -21,13 +21,6 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'password1', 'password2','nim_nidn', 'role']
 
-
-class MahasiswaProfileForm(forms.ModelForm):
-    class Meta:
-        model = Mahasiswa
-        fields = ['foto_profil', 'nama_lengkap', 'email']
-
-
 class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile

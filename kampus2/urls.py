@@ -12,10 +12,10 @@ urlpatterns = [
     path('dosen/dashboard', dosen, name='dosen'),
     path('mahasiswa/dashboard', mahasiswa, name='mahasiswa'),
     path('pageAdmin/dashboard', pageAdmin, name='pageAdmin'),
-    path('mahasiswa/update', update_profile, name='update-profile'),
-    path('mahasiswa/profile', view_profile, name='view-profile'),
     # profile
-    path('dosen/profile', dosenProfile, name='profile'),
+    path('dosen/profile', dosenProfile, name='profile_dsn'),
     path('dosen/edit', edit_dosen_profile, name='edit-dosen'),
 
+    path('mahasiswa/profile', mahasiswaProfile, name='profile_mhs'),
+    path('mahasiswa/edit', edit_mahasiswa_profile, name='edit-mahasiswa'),
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
