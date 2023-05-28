@@ -1,29 +1,69 @@
-{% block content %}
+<!-- template.html -->
 
-<div class="container mt-5">
-    <h1>Kamu mau tau apa aja biar aku bantu kasih tau</h1>
-    <div class="chat-container">
-        <div class="chat-messages">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat GPT</title>
+    <style>
+        body {
+            display: flex;
+        }
+        #sidebar {
+            width: 20%;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+        #content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        #history {
+            list-style-type: none;
+            padding: 0;
+        }
+        #messages {
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
+    <script>
+        function scrollToBottom() {
+            var messages = document.getElementById("messages");
+            messages.scrollTop = messages.scrollHeight;
+        }
+        window.onload = scrollToBottom;
+
+        function newChat() {
+            window.location.href = "{% url 'newChat' %}";
+        }
+    </script>
+</head>
+<body>
+    <div id="sidebar">
+        <h2>History Pencarian</h2>
+        <ul id="history">
+            {% for search in searches %}
+                <li><a href="{% url 'loadChat' search %}">{{ search }}</a></li>
+            {% endfor %}
+        </ul>
+        <button onclick="newChat()">New Chat</button>
+    </div>
+    <div id="content">
+        <h1>Halaman Chat GPT</h1>
+        <form method="POST" action="{% url 'chatbot' %}">
+            {% csrf_token %}
+            <input type="text" name="prompt" placeholder="Pencarian...">
+            <input type="submit" value="Cari">
+        </form>
+        <ul id="messages">
             {% for message in messages %}
                 {% if message.sender == 'user' %}
-                    <div class="user-message"><i>{{ message.content }}</i>
-                        <br>
-                    </div>
-                    <br>
-                {% else %}
-                    <div class="bot-message">{{ message.content }}
-                        <hr>
-                    </div>
+                    <li><strong>User:</strong> {{ message.content }}</li>
+                {% elif message.sender == 'bot' %}
+                    <li><strong>Bot:</strong> {{ message.content }}</li>
                 {% endif %}
             {% endfor %}
-        </div>
-
-        <form method="POST" action="{% url 'chatbot' %}" class="chat-input">
-            {% csrf_token %}
-            <input type="text" class="form-control" id="prompt" name="prompt" placeholder="Tanya apa aja...">
-            <button type="submit" class="btn btn-success">Kirim</button>
-        </form>
+        </ul>
     </div>
-</div>
-
-{% endblock content %}
+</body>
+</html>

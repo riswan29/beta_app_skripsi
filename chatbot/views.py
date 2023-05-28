@@ -8,6 +8,8 @@ openai.api_key = "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"
 
 # Daftar pesan dalam sesi
 session_messages = []
+# Daftar pencarian sebelumnya
+search_history = []
 
 
 def homeBot(request):
@@ -24,15 +26,50 @@ def homeBot(request):
         )
         message = completions.choices[0].text
 
-        save_to_excel(prompt, message)
-
         # Menambahkan prompt dan respon ke dalam daftar pesan sesi
         session_messages.append({"sender": "user", "content": prompt})
         session_messages.append({"sender": "bot", "content": message})
 
-        return render(request, "index.html", {"messages": session_messages})
+        # Menambahkan pencarian ke dalam daftar history pencarian
+        search_history.append(prompt)
+
+        # Simpan ke file Excel
+        save_to_excel(prompt, message)
+
+        context = {"messages": session_messages, "searches": search_history}
+        return render(request, "index.html", context)
     else:
-        return render(request, "index.html", {"messages": session_messages})
+        context = {"messages": session_messages, "searches": search_history}
+        return render(request, "index.html", context)
+
+
+def newChat(request):
+    global session_messages
+    session_messages = []
+    return render(request, "index.html", {})
+
+
+def loadChat(request, search):
+    global session_messages
+    session_messages = []
+    prompt = search
+    model_engine = "text-davinci-003"
+
+    completions = openai.Completion.create(
+        engine=model_engine,
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        temperature=0.5,
+    )
+    message = completions.choices[0].text
+
+    # Menambahkan prompt dan respon ke dalam daftar pesan sesi
+    session_messages.append({"sender": "user", "content": prompt})
+    session_messages.append({"sender": "bot", "content": message})
+
+    context = {"messages": session_messages, "searches": search_history}
+    return render(request, "index.html", context)
 
 def save_to_excel(prompt, message):
     # Buka file Excel atau buat file baru jika belum ada
