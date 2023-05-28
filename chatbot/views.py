@@ -2,7 +2,10 @@ from django.shortcuts import render
 import requests
 import openai
 from openpyxl import Workbook,load_workbook
-import csv
+from django.contrib.auth import authenticate, login as django_login
+from django.contrib.auth.decorators import login_required
+from .models import *
+
 
 openai.api_key = "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"
 
@@ -11,8 +14,10 @@ session_messages = []
 # Daftar pencarian sebelumnya
 search_history = []
 
-
+@login_required
 def homeBot(request):
+    global search_history
+
     if request.method == "POST":
         prompt = request.POST.get("prompt")
         model_engine = "text-davinci-003"
@@ -26,21 +31,28 @@ def homeBot(request):
         )
         message = completions.choices[0].text
 
+        # Simpan history pencarian terkait dengan pengguna yang sedang login
+        chat_history = ChatHistory(user=request.user, prompt=prompt, message=message)
+        chat_history.save()
+
         # Menambahkan prompt dan respon ke dalam daftar pesan sesi
         session_messages.append({"sender": "user", "content": prompt})
         session_messages.append({"sender": "bot", "content": message})
 
-        # Menambahkan pencarian ke dalam daftar history pencarian
-        search_history.append(prompt)
-
-        # Simpan ke file Excel
-        save_to_excel(prompt, message)
-
+        # Menampilkan history pencarian pengguna yang sedang login
+        search_history = ChatHistory.objects.filter(user=request.user)
         context = {"messages": session_messages, "searches": search_history}
         return render(request, "index.html", context)
     else:
+        # Hapus pesan sesi jika pengguna baru login
+        if not session_messages:
+            session_messages.clear()
+
+        # Menampilkan history pencarian pengguna yang sedang login
+        search_history = ChatHistory.objects.filter(user=request.user)
         context = {"messages": session_messages, "searches": search_history}
         return render(request, "index.html", context)
+
 
 
 def newChat(request):
