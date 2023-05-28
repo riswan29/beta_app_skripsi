@@ -1,0 +1,29 @@
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Kamu mau tau apa aja biar aku bantu kasih tau</h1>
+    <div class="chat-container">
+        <div class="chat-messages">
+            {% for message in messages %}
+                {% if message.sender == 'user' %}
+                    <div class="user-message"><i>{{ message.content }}</i>
+                        <br>
+                    </div>
+                    <br>
+                {% else %}
+                    <div class="bot-message">{{ message.content }}
+                        <hr>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="{% url 'chatbot' %}" class="chat-input">
+            {% csrf_token %}
+            <input type="text" class="form-control" id="prompt" name="prompt" placeholder="Tanya apa aja...">
+            <button type="submit" class="btn btn-success">Kirim</button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
