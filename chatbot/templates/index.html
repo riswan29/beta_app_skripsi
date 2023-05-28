@@ -41,13 +41,29 @@
 <body>
     <div id="sidebar">
         <h2>History Pencarian</h2>
+        <form method="GET" action="{% url 'chatbot' %}">
+            <input type="text" name="search_query" placeholder="Cari history..." value="{{ search_query|default_if_none:'' }}">
+            <button type="submit">Cari</button>
+        </form>
         <ul id="history">
             {% for search in searches %}
                 <li><a href="{% url 'loadChat' search %}">{{ search }}</a></li>
             {% endfor %}
         </ul>
+        {% if page.has_previous or page.has_next %}
+            <div class="pagination">
+                {% if page.has_previous %}
+                    <a href="?page={{ page.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current-page">{{ page.number }} of {{ page.paginator.num_pages }}</span>
+                {% if page.has_next %}
+                    <a href="?page={{ page.next_page_number }}">next</a>
+                {% endif %}
+            </div>
+        {% endif %}
         <button onclick="newChat()">New Chat</button>
     </div>
+
     <div id="content">
         <h1>Halaman Chat GPT</h1>
         <form method="POST" action="{% url 'chatbot' %}">

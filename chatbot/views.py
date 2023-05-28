@@ -5,6 +5,8 @@ from openpyxl import Workbook,load_workbook
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
 from .models import *
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 openai.api_key = "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"
@@ -13,11 +15,11 @@ openai.api_key = "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"
 session_messages = []
 # Daftar pencarian sebelumnya
 search_history = []
-
+MAX_HISTORY_LENGTH = 20  # Jumlah maksimum riwayat pencarian yang ditampilkan
+SHORTENED_LENGTH = 20  # Panjang maksimum riwayat yang dipersingkat
+ITEMS_PER_PAGE = 3  # Jumlah item yang ditampilkan per halaman
 @login_required
 def homeBot(request):
-    global search_history
-
     if request.method == "POST":
         prompt = request.POST.get("prompt")
         model_engine = "text-davinci-003"
@@ -40,17 +42,51 @@ def homeBot(request):
         session_messages.append({"sender": "bot", "content": message})
 
         # Menampilkan history pencarian pengguna yang sedang login
-        search_history = ChatHistory.objects.filter(user=request.user)
-        context = {"messages": session_messages, "searches": search_history}
+        search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
+        paginator = Paginator(search_history, ITEMS_PER_PAGE)
+
+        page_number = request.GET.get("page", 1)
+        page = paginator.get_page(page_number)
+
+        shortened_history = []
+        for history in page:
+            prompt = history.prompt
+            if len(prompt) > SHORTENED_LENGTH:  # Batasi panjang prompt menjadi SHORTENED_LENGTH karakter
+                prompt = prompt[:SHORTENED_LENGTH-3] + "..."
+            shortened_history.append(prompt)
+
+        context = {
+            "messages": session_messages,
+            "searches": shortened_history,
+            "page": page,
+        }
         return render(request, "index.html", context)
     else:
-        # Hapus pesan sesi jika pengguna baru login
-        if not session_messages:
-            session_messages.clear()
+        search_query = request.GET.get('search_query')
 
         # Menampilkan history pencarian pengguna yang sedang login
-        search_history = ChatHistory.objects.filter(user=request.user)
-        context = {"messages": session_messages, "searches": search_history}
+        search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
+
+        if search_query:
+            search_history = search_history.filter(Q(prompt__icontains=search_query) | Q(message__icontains=search_query))
+
+        paginator = Paginator(search_history, ITEMS_PER_PAGE)
+        page_number = request.GET.get("page", 1)
+        page = paginator.get_page(page_number)
+
+        shortened_history = []
+        for history in page:
+            prompt = history.prompt
+            if len(prompt) > SHORTENED_LENGTH:  # Batasi panjang prompt menjadi SHORTENED_LENGTH karakter
+                prompt = prompt[:SHORTENED_LENGTH-3] + "..."
+            shortened_history.append(prompt)
+
+        context = {
+            "messages": session_messages,
+            "searches": shortened_history,
+            "page": page,
+            "search_query": search_query,
+        }
         return render(request, "index.html", context)
 
 

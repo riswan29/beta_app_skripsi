@@ -9,6 +9,7 @@ from app.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login, name='login'),
+    path('logout/', logoutUser, name="logout"),
     path('register/', register, name='register'),
     path('dosen/dashboard', dosen, name='dosen'),
     path('mahasiswa/dashboard', mahasiswa, name='mahasiswa'),

@@ -1,12 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
 from .forms import *
 from .models import *
 
 def login(request):
     form = FormLogin()
+    if request.user.is_authenticated:
+        user_profile = UserProfile.objects.get(user=request.user)
+
+        if user_profile.role == 'mahasiswa':
+            return redirect('/mahasiswa/dashboard')
+        elif user_profile.role == 'dosen':
+            return redirect('/dosen/dashboard')
+        elif user_profile.role == 'admin':
+            return redirect('/admin/dashboard')
+
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -61,20 +72,20 @@ def register(request):
 
     return render(request, 'register.html', {'form': form})
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def mahasiswa(request):
     return render(request, 'mahasiswa/dashboard.html')
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def dosen(request):
     return render(request, 'dosen/dashboard.html')
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def pageAdmin(request):
     return render(request, 'pageAdmin/dashboard.html')
 
 
-@login_required
+@login_required(login_url="login")
 def update_profile(request):
     mahasiswa = request.user.mahasiswa
 
@@ -89,6 +100,9 @@ def update_profile(request):
 
     return render(request, 'mahasiswa/update_profile.html', {'form': form})
 
+def logoutUser(request):
+    logout(request)
+    return redirect("login")
 
 ################# Profiles dosen #################
 
