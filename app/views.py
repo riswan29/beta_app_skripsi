@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout,authenticate
 from django.contrib import messages
@@ -16,7 +17,7 @@ def login(request):
         elif user_profile.role == 'dosen':
             return redirect('/dosen/dashboard')
         elif user_profile.role == 'admin':
-            return redirect('/admin/dashboard')
+            return redirect('/pageAdmin/dashboard')
 
     if request.method == "POST":
         username = request.POST['username']
@@ -34,7 +35,7 @@ def login(request):
             elif user_profile.role == 'dosen':
                 return redirect('/dosen/dashboard')
             elif user_profile.role == 'admin':
-                return redirect('/pageAdmin/dashboard')
+                return redirect('pageAdmin')
 
     return render(request, 'login.html', {'form':form})
 
@@ -80,9 +81,21 @@ def mahasiswa(request):
 def dosen(request):
     return render(request, 'dosen/dashboard.html')
 
-@login_required(login_url="login")
+
 def pageAdmin(request):
-    return render(request, 'pageAdmin/dashboard.html')
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = CourseForm()
+    return render(request, 'pageAdmin/add_jadwal.html', {'form': form})
+
+def dosenList(request):
+    dosen_users = User.objects.filter(userprofile__role='dosen')
+    return render(request, 'pageAdmin/dashboard.html', {'dosen_users': dosen_users})
+
 
 
 @login_required(login_url="login")
@@ -156,3 +169,35 @@ def edit_mahasiswa_profile(request):
         'user_profile': user_profile
     }
     return render(request, 'mahasiswa/edit_profile.html', context)
+
+@login_required
+def buat_jadwal(request):
+    form = BuatJadwalForm()
+
+    if request.method == 'POST':
+        form = BuatJadwalForm(request.POST)
+        if form.is_valid():
+            jadwal = form.save(commit=False)
+            user_profile = UserProfile.objects.get(user=request.user)
+            jadwal.dosen = user_profile
+            jadwal.save()
+            return redirect('lihat_jadwal')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'pageAdmin/buat_jadwal.html', context)
+
+
+
+def lihat_jadwal(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    jadwal_dosen = Jadwal.objects.filter(dosen=user)
+
+    context = {
+        'user': user,
+        'jadwal_dosen': jadwal_dosen
+    }
+
+    return render(request, 'pageAdmin/lihat_jadwal.html', context)

@@ -1,0 +1,9 @@
+<h1>Buat Jadwal</h1>
+
+<form method="POST">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  <button type="submit">Simpan</button>
+</form>

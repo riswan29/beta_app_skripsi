@@ -1,0 +1,20 @@
+<a href="{% url 'logout' %}">logout</a>
+<h1>Daftar Dosen</h1>
+<ul>
+    {% for user in dosen_users %}
+    <form method="POST" action="{% url 'buat_jadwal' %}">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <table border=2>
+            <tr>
+                <td>{{ user.username }}</td>
+                <td><button type="submit">Buat jadwal</button></td>
+                <td><a href="{% url 'lihat_jadwal' user.id %}">Lihat jadwal</a></td>
+            </tr>
+        </table>
+    </form>
+    {% empty %}
+        <li>Tidak ada dosen yang ditemukan.</li>
+    {% endfor %}
+</ul>
+

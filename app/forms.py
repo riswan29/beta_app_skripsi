@@ -12,7 +12,6 @@ class FormLogin(forms.Form):
         widget = forms.PasswordInput(attrs={'class':'form-control'}),
     )
 
-
 class RegistrationForm(UserCreationForm):
     role = forms.ChoiceField(choices=UserProfile.USER_ROLES)
     nim_nidn = forms.CharField(max_length=10)
@@ -25,3 +24,9 @@ class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['full_name','gambar', 'alamat']
+
+
+class BuatJadwalForm(forms.ModelForm):
+    class Meta:
+        model = Jadwal
+        fields = ['hari', 'waktu', 'kode_mata_kuliah', 'nama_mata_kuliah', 'sks', 'jurusan', 'semester', 'ruangan', 'metode_pembelajaran']

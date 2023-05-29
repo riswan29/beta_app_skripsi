@@ -13,7 +13,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('dosen/dashboard', dosen, name='dosen'),
     path('mahasiswa/dashboard', mahasiswa, name='mahasiswa'),
-    path('pageAdmin/dashboard', pageAdmin, name='pageAdmin'),
+    path('pageAdmin/dashboard', dosenList, name='pageAdmin'),
     # profile
     path('dosen/profile', dosenProfile, name='profile_dsn'),
     path('dosen/edit', edit_dosen_profile, name='edit-dosen'),
@@ -21,5 +21,7 @@ urlpatterns = [
     path('mahasiswa/edit', edit_mahasiswa_profile, name='edit-mahasiswa'),
     # chatbot
     path('', include("chatbot.urls")),
+    path('buat_jadwal/', buat_jadwal, name='buat_jadwal'),
+    path('lihat_jadwal/<int:user_id>/', lihat_jadwal, name='lihat_jadwal'),
 
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

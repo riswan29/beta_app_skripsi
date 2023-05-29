@@ -1,0 +1,8 @@
+{% block content %}
+  <h2>Tambah Jadwal Mata Kuliah</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Simpan</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,8 @@
+<h1>Jadwal Dosen: {{ user.username }}</h1>
+<ul>
+    {% for jadwal in jadwal %}
+        <li>{{ jadwal }}</li>
+    {% empty %}
+        <li>Tidak ada jadwal yang ditemukan.</li>
+    {% endfor %}
+</ul>
