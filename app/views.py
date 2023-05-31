@@ -96,8 +96,6 @@ def dosenList(request):
     dosen_users = User.objects.filter(userprofile__role='dosen')
     return render(request, 'pageAdmin/dashboard.html', {'dosen_users': dosen_users})
 
-
-
 @login_required(login_url="login")
 def update_profile(request):
     mahasiswa = request.user.mahasiswa

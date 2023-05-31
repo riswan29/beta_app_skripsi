@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Daftar pesan dalam sesi
 session_messages = []
@@ -18,7 +18,7 @@ search_history = []
 MAX_HISTORY_LENGTH = 20  # Jumlah maksimum riwayat pencarian yang ditampilkan
 SHORTENED_LENGTH = 20  # Panjang maksimum riwayat yang dipersingkat
 ITEMS_PER_PAGE = 3  # Jumlah item yang ditampilkan per halaman
-@login_required
+@login_required(login_url="login")
 def homeBot(request):
     if request.method == "POST":
         prompt = request.POST.get("prompt")
@@ -90,13 +90,13 @@ def homeBot(request):
         return render(request, "index.html", context)
 
 
-
+@login_required(login_url="login")
 def newChat(request):
     global session_messages
     session_messages = []
     return render(request, "index.html", {})
 
-
+@login_required(login_url="login")
 def loadChat(request, search):
     global session_messages
     session_messages = []
@@ -119,6 +119,7 @@ def loadChat(request, search):
     context = {"messages": session_messages, "searches": search_history}
     return render(request, "index.html", context)
 
+@login_required(login_url="login")
 def save_to_excel(prompt, message):
     # Buka file Excel atau buat file baru jika belum ada
     try:
