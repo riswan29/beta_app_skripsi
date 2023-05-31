@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chat GPT</title>
+    <title>{{user.username}} | Chatbot Page</title>
     <style>
         body {
             display: flex;
@@ -98,13 +98,16 @@
             {% csrf_token %}
             <input type="text" name="prompt" placeholder="Pencarian...">
             <input type="submit" value="Cari">
+            <br>
+            <strong> Asisten</strong> : <p>hai {{user.username}} saya adalah assisten mu yang akan membantu mu</p>
         </form>
         <ul id="messages">
             {% for message in messages %}
                 {% if message.sender == 'user' %}
                     <li><strong>User:</strong> {{ message.content }}</li>
-                {% elif message.sender == 'bot' %}
-                    <li><strong>Bot:</strong> {{ message.content }}</li>
+                    {% elif message.sender == 'bot' %}
+                    <li><strong>Asisten:</strong> {{ message.content }}</li>
+                    <br>
                 {% endif %}
             {% endfor %}
         </ul>

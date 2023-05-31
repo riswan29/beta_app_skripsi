@@ -7,9 +7,10 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Q
+from .key import Keys
 
 
-openai.api_key = "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"
+openai.api_key = Keys
 
 # Daftar pesan dalam sesi
 session_messages = []
