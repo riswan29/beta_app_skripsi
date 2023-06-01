@@ -1,6 +1,0 @@
-key.py
-__pychache__/
-migrations/
-../db.sqlite3
-../app/__pychache__
-../app/migrations
