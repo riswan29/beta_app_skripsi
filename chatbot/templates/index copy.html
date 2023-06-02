@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{user.username}} | Chatbot Page</title>
+    <style>
+        body {
+            display: flex;
+        }
+        #sidebar {
+            width: 20%;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+        #content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .code-block {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+        #history {
+            list-style-type: none;
+            padding: 0;
+        }
+        #messages {
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
+    <script>
+        function scrollToBottom() {
+            var messages = document.getElementById("messages");
+            messages.scrollTop = messages.scrollHeight;
+        }
+        window.onload = scrollToBottom;
+
+        function newChat() {
+            window.location.href = "{% url 'newChat' %}";
+        }
+        function appendMessage(sender, content) {
+            var messages = document.getElementById("messages");
+            var messageElement = document.createElement("li");
+            var messageContent = document.createElement("div");
+            messageContent.classList.add("message-content");
+
+            if (sender === "user") {
+                messageContent.innerHTML = "<strong>User:</strong> " + content;
+            } else if (sender === "bot") {
+                var codeBlock = document.createElement("div");
+                codeBlock.classList.add("code-block");
+                codeBlock.textContent = content;
+                messageContent.appendChild(codeBlock);
+            }
+
+            messageElement.appendChild(messageContent);
+            messages.appendChild(messageElement);
+        }
+
+        // Fungsi ini akan dipanggil ketika mendapatkan respons dari chat bot
+        function receiveMessage(sender, content) {
+            appendMessage(sender, content);
+            scrollToBottom();
+        }
+    </script>
+</head>
+<body>
+    <div id="sidebar">
+        <h2>History Pencarian</h2>
+        <form method="GET" action="{% url 'chatbot' %}">
+            <input type="text" name="search_query" placeholder="Cari history..." value="{{ search_query|default_if_none:'' }}">
+            <button type="submit">Cari</button>
+        </form>
+        <ul id="history">
+            {% for search in searches %}
+                <li><a href="{% url 'loadChat' search %}">{{ search }}</a></li>
+            {% endfor %}
+        </ul>
+        {% if page.has_previous or page.has_next %}
+            <div class="pagination">
+                {% if page.has_previous %}
+                    <a href="?page={{ page.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="current-page">{{ page.number }} of {{ page.paginator.num_pages }}</span>
+                {% if page.has_next %}
+                    <a href="?page={{ page.next_page_number }}">next</a>
+                {% endif %}
+            </div>
+        {% endif %}
+        <button onclick="newChat()">New Chat</button>
+    </div>
+
+    <div id="content">
+        <h1>Halaman Chat GPT</h1>
+        <form method="POST" action="{% url 'chatbot' %}">
+            {% csrf_token %}
+            <input type="text" name="prompt" placeholder="Pencarian...">
+            <input type="submit" value="Cari">
+            <br>
+            <strong> Asisten</strong> : <p>hai {{user.username}} saya adalah assisten mu yang akan membantu mu</p>
+        </form>
+        <ul id="messages">
+            {% for message in messages %}
+                {% if message.sender == 'user' %}
+                    <li><strong>User:</strong> {{ message.content }}</li>
+                    {% elif message.sender == 'bot' %}
+                    <li><strong>Asisten:</strong> {{ message.content }}</li>
+                    <br>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

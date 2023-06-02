@@ -1,67 +1,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{user.username}} | Chatbot Page</title>
+    <title>{{ user.username }} | Chatbot Page</title>
     <style>
         body {
             display: flex;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
         }
+
         #sidebar {
-            width: 20%;
+            width: 300px;
             padding: 20px;
-            background-color: #f2f2f2;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        #sidebar button {
+            align-self: end;
+            margin-top: 10px;
+        }
+
         #content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             flex-grow: 1;
             padding: 20px;
+            height: 100vh;
         }
-        .code-block {
+
+        #chat-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-header {
             background-color: #f2f2f2;
-            padding: 10px;
+            padding: 20px;
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        #chat-history {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .message {
             margin-bottom: 10px;
-            white-space: pre-wrap;
+            padding: 10px;
+            border-radius: 4px;
         }
+
+        .user-message {
+            background-color: #eff8ff;
+        }
+
+        .bot-message {
+            background-color: #e8e8e8;
+        }
+
+        .message-content {
+            margin-top: 5px;
+        }
+
+        .user-message .message-content {
+            text-align: right;
+        }
+
+        .bot-message .message-content {
+            text-align: left;
+        }
+
+        #chat-input {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        #chat-input input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #chat-input button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #chat-input button:hover {
+            background-color: #45a049;
+        }
+
         #history {
-            list-style-type: none;
+            list-style: none;
+            margin: 0;
             padding: 0;
         }
-        #messages {
-            list-style-type: none;
-            padding: 0;
+
+        #history li {
+            margin-bottom: 5px;
+        }
+
+        #history li a {
+            display: block;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            color: #333333;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        #history li a:hover {
+            background-color: #e6e6e6;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            align-self: end;
+        }
+
+        .pagination button {
+            margin: 0 5px;
         }
     </style>
     <script>
         function scrollToBottom() {
-            var messages = document.getElementById("messages");
-            messages.scrollTop = messages.scrollHeight;
+            var chatHistory = document.getElementById("chat-history");
+            chatHistory.scrollTop = chatHistory.scrollHeight;
         }
-        window.onload = scrollToBottom;
 
-        function newChat() {
-            window.location.href = "{% url 'newChat' %}";
-        }
-        function appendMessage(sender, content) {
-            var messages = document.getElementById("messages");
-            var messageElement = document.createElement("li");
-            var messageContent = document.createElement("div");
-            messageContent.classList.add("message-content");
+        function sendMessage() {
+            var inputElement = document.getElementById("message-input");
+            var message = inputElement.value.trim();
 
-            if (sender === "user") {
-                messageContent.innerHTML = "<strong>User:</strong> " + content;
-            } else if (sender === "bot") {
-                var codeBlock = document.createElement("div");
-                codeBlock.classList.add("code-block");
-                codeBlock.textContent = content;
-                messageContent.appendChild(codeBlock);
+            if (message !== "") {
+                var chatHistory = document.getElementById("chat-history");
+                var messageContainer = document.createElement("div");
+                var messageContent = document.createElement("div");
+
+                messageContainer.classList.add("message", "user-message");
+                messageContent.classList.add("message-content");
+                messageContent.textContent = message;
+
+                messageContainer.appendChild(messageContent);
+                chatHistory.appendChild(messageContainer);
+
+                inputElement.value = "";
+                scrollToBottom();
+
+                // Panggil fungsi untuk mengirim pesan ke chatbot dan menerima responsnya
+                // Misalnya: sendToChatbot(message);
             }
-
-            messageElement.appendChild(messageContent);
-            messages.appendChild(messageElement);
         }
 
-        // Fungsi ini akan dipanggil ketika mendapatkan respons dari chat bot
-        function receiveMessage(sender, content) {
-            appendMessage(sender, content);
+        function receiveMessage(content) {
+            var chatHistory = document.getElementById("chat-history");
+            var messageContainer = document.createElement("div");
+            var messageContent = document.createElement("div");
+
+            messageContainer.classList.add("message", "bot-message");
+            messageContent.classList.add("message-content");
+            messageContent.textContent = content;
+
+            messageContainer.appendChild(messageContent);
+            chatHistory.appendChild(messageContainer);
+
             scrollToBottom();
         }
     </script>
@@ -89,28 +214,24 @@
                 {% endif %}
             </div>
         {% endif %}
-        <button onclick="newChat()">New Chat</button>
+        <center>
+        <button onclick="newChat()" class="pagination">New Chat</button></center>
     </div>
 
     <div id="content">
-        <h1>Halaman Chat GPT</h1>
-        <form method="POST" action="{% url 'chatbot' %}">
-            {% csrf_token %}
-            <input type="text" name="prompt" placeholder="Pencarian...">
-            <input type="submit" value="Cari">
-            <br>
-            <strong> Asisten</strong> : <p>hai {{user.username}} saya adalah assisten mu yang akan membantu mu</p>
-        </form>
-        <ul id="messages">
-            {% for message in messages %}
-                {% if message.sender == 'user' %}
-                    <li><strong>User:</strong> {{ message.content }}</li>
-                    {% elif message.sender == 'bot' %}
-                    <li><strong>Asisten:</strong> {{ message.content }}</li>
-                    <br>
-                {% endif %}
-            {% endfor %}
-        </ul>
+        <div id="chat-container">
+            <div id="chat-header">
+                <h1>Chat GPT</h1>
+                <p>Selamat datang, {{ user.username }}!</p>
+            </div>
+            <div id="chat-history">
+                <!-- Tampilkan riwayat chat di sini -->
+            </div>
+            <div id="chat-input">
+                <input type="text" id="message-input" placeholder="Ketik pesan...">
+                <button onclick="sendMessage()">Kirim</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
