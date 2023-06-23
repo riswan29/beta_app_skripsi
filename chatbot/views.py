@@ -61,7 +61,7 @@ def homeBot(request):
             "searches": shortened_history,
             "page": page,
         }
-        return render(request, "index.html", context)
+        return render(request, "index copy.html", context)
     else:
         search_query = request.GET.get('search_query')
 
@@ -88,7 +88,7 @@ def homeBot(request):
             "page": page,
             "search_query": search_query,
         }
-        return render(request, "index.html", context)
+        return render(request, "index copy.html", context)
 
 
 @login_required(login_url="login")
