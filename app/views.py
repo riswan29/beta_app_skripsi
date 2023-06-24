@@ -223,7 +223,7 @@ def buat_tugas(request):
             tugas = form.save(commit=False)
             tugas.file_tugas = request.FILES['file_tugas']  # Mengambil file yang diunggah
             tugas.save()
-            return redirect('../dosen/dashboard')  # Ubah 'nama_rute_tampilan' dengan nama rute yang sesuai
+            return redirect('dosen')  # Ubah 'nama_rute_tampilan' dengan nama rute yang sesuai
     else:
         form = TugasForm()
 

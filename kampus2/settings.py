@@ -106,7 +106,6 @@ USE_TZ = True
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.MemoryFileUploadHandler',
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
-    'django.core.files.uploadhandler.TemporaryUploadedFile',
 ]
 MAGIC_MIME_TYPES = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
