@@ -220,8 +220,10 @@ def buat_tugas(request):
     if request.method == 'POST':
         form = TugasForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('nama_rute_tampilan'))
+            tugas = form.save(commit=False)
+            tugas.file_tugas = request.FILES['file_tugas']  # Mengambil file yang diunggah
+            tugas.save()
+            return redirect('../dosen/dashboard')  # Ubah 'nama_rute_tampilan' dengan nama rute yang sesuai
     else:
         form = TugasForm()
 

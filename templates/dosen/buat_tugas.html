@@ -4,7 +4,7 @@
         {{ form.nama_tugas }}
         <br>
     <label for="id_deadline">Deadline : </label>
-    <input type="datetime-local" id="id_deadline" name="deadline" value="{{ form.deadline.value|date:'Y-m-dTH:i' }}">
+    {{form.deadline}}
         <br>
     <label for="keterangan">Keterangan  : </label>
         {{ form.keterangan }}
