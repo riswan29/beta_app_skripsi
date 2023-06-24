@@ -8,5 +8,11 @@ class UserProfileAdmin(admin.ModelAdmin):
     search_fields = ('full_name', 'user__username', 'nim_nidn')  # Menambahkan kolom pencarian
     ordering = ('full_name',)
 admin.site.register(UserProfile,UserProfileAdmin)
-# admin.site.register(Course)
-admin.site.register(Jadwal)
+
+class JadwalAdmin(admin.ModelAdmin):
+    list_display = ('dosen', 'nama_mata_kuliah', 'hari')
+    list_filter = ('dosen', 'nama_mata_kuliah', 'hari')
+admin.site.register(Jadwal, JadwalAdmin)
+
+admin.site.register(Tugas)
+

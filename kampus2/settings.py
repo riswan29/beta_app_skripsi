@@ -1,4 +1,5 @@
 import os
+import magic
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -101,6 +102,26 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.MemoryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+    'django.core.files.uploadhandler.TemporaryUploadedFile',
+]
+MAGIC_MIME_TYPES = {
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+    "application/pdf": "pdf",
+    "application/zip": "zip",
+}
+
+def get_upload_file_extension(file):
+    mime = magic.from_buffer(file.read(1024), mime=True)
+    file.seek(0)
+    return MAGIC_MIME_TYPES.get(mime)
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB (maximum file size allowed to be stored in memory)
+
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 
 # Static files (CSS, JavaScript, Images)

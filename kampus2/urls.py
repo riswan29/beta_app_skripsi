@@ -25,5 +25,7 @@ urlpatterns = [
     path('buat_jadwal/', buat_jadwal, name='buat_jadwal'),
     path('lihat_jadwal/<int:user_id>/', lihat_jadwal, name='lihat_jadwal'),
     path('ganti_password/', change_password, name='ganti_password'),
+    path('jadwal/', lihat_jadwal, name='jadwal'),
+    path('buat-tugas/', buat_tugas, name='buat_tugas'),
 
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

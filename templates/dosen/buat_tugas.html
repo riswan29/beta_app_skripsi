@@ -1,0 +1,22 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="nama">Nama Tugas:</label>
+        {{ form.nama_tugas }}
+        <br>
+    <label for="id_deadline">Deadline : </label>
+    <input type="datetime-local" id="id_deadline" name="deadline" value="{{ form.deadline.value|date:'Y-m-dTH:i' }}">
+        <br>
+    <label for="keterangan">Keterangan  : </label>
+        {{ form.keterangan }}
+        <br>
+    <label for="semester">Semester : </label>
+        {{ form.semester }}
+        <br>
+    <label for="jurusan">Jurusan : </label>
+        {{ form.jurusan }}
+        <br>
+    <label for="file_tugas">File Tugas : </label>
+        {{ form.file_tugas }}
+        <br>
+    <button type="submit">Buat Tugas</button>
+</form>
