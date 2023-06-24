@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .forms import *
 from .models import *
@@ -199,3 +200,14 @@ def lihat_jadwal(request, user_id):
     }
 
     return render(request, 'pageAdmin/lihat_jadwal.html', context)
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('../login/')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'mahasiswa/ganti.html', {'form': form})

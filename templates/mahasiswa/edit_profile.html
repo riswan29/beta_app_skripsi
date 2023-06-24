@@ -11,6 +11,9 @@
         <br>
         <label for="nama">Alamat</label>
         {{ form.alamat }}
+        <label for="nama">Ganti Password</label>
+        <a href="{% url 'ganti_password' %}">Ganti Password</a>
+
         <button type="submit">Simpan</button>
     </form>
 {% endblock content %}
