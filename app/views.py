@@ -218,14 +218,14 @@ def change_password(request):
 
 def buat_tugas(request):
     if request.method == 'POST':
-        form = TugasForm(request.POST, request.FILES)
+        form = TugasForm(request.POST, request.FILES, current_user=request.user)
         if form.is_valid():
             tugas = form.save(commit=False)
-            tugas.file_tugas = request.FILES['file_tugas']  # Mengambil file yang diunggah
+            tugas.file_tugas = request.FILES['file_tugas']
             tugas.save()
-            return redirect('dosen')  # Ubah 'nama_rute_tampilan' dengan nama rute yang sesuai
+            return redirect('dosen')  # Ubah 'dosen' dengan rute yang sesuai
     else:
-        form = TugasForm()
+        form = TugasForm(current_user=request.user)
 
     context = {
         'form': form

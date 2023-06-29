@@ -14,5 +14,6 @@ class JadwalAdmin(admin.ModelAdmin):
     list_filter = ('dosen', 'nama_mata_kuliah', 'hari')
 admin.site.register(Jadwal, JadwalAdmin)
 
-admin.site.register(Tugas)
-
+class TugasAdmin(admin.ModelAdmin):
+    list_display = ('nama_tugas', 'nama_pengguna', 'tanggal_dibuat', 'deadline')
+admin.site.register(Tugas, TugasAdmin)

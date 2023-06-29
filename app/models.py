@@ -86,7 +86,7 @@ class Tugas(models.Model):
         ('semester8', 'Semester 8'),
         # Tambahkan pilihan semester lainnya sesuai kebutuhan
     )
-
+    nama_pengguna = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     nama_tugas = models.CharField(max_length=100)
     tanggal_dibuat = models.DateTimeField(default=datetime.now)
     deadline = models.DateTimeField()
