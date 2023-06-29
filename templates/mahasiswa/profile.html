@@ -1,14 +1,3 @@
-{% comment %} {% block content %}
-    <h1>Profil Dosen</h1>
-
-        <p>NIM/NIDN: {{ user_profile.nim_nidn }}</p>
-        <p>Username: {{ user_profile.user.username }}</p>
-        <p>Role: {{ user_profile.get_role_display }}</p>
-
-        <input type="submit" name="edit" value="Edit">
-{% endblock content %} {% endcomment %}
-
-
 {% block content %}
     <h1>Profil {{user.username}}</h1>
     {% if user_profile.full_name%}

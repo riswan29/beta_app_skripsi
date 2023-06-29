@@ -3,9 +3,12 @@ from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .forms import *
-from .models import *
+from .models import UserProfile
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def login(request):
     form = FormLogin()
@@ -189,13 +192,43 @@ def buat_jadwal(request):
 
 
 
-def lihat_jadwal(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    jadwal_dosen = Jadwal.objects.filter(dosen=user)
+def lihat_jadwal(request):
+    # Mengambil profil pengguna yang sedang login
+    user_profile = UserProfile.objects.get(user=request.user)
 
+    # Mengambil jadwal berdasarkan pengguna (user) yang sedang login
+    jadwal = Jadwal.objects.filter(dosen=user_profile)
+    print(jadwal)
     context = {
-        'user': user,
-        'jadwal_dosen': jadwal_dosen
+        'jadwal': jadwal
     }
 
-    return render(request, 'pageAdmin/lihat_jadwal.html', context)
+    return render(request, 'dosen/lihat_jadwal.html', context)
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('../login/')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'mahasiswa/ganti.html', {'form': form})
+
+def buat_tugas(request):
+    if request.method == 'POST':
+        form = TugasForm(request.POST, request.FILES, current_user=request.user)
+        if form.is_valid():
+            tugas = form.save(commit=False)
+            tugas.file_tugas = request.FILES['file_tugas']
+            tugas.save()
+            return redirect('dosen')  # Ubah 'dosen' dengan rute yang sesuai
+    else:
+        form = TugasForm(current_user=request.user)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'dosen/buat_tugas.html', context)

@@ -1,0 +1,6 @@
+<form method="POST" action="{% url 'buat_tugas' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{form.as_p}}
+    <button type="submit">Buat Tugas</button>
+</form>
