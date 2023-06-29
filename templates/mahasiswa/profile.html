@@ -14,7 +14,7 @@
     {% if user_profile.full_name%}
         <p>Nama: {{ user_profile.full_name }}</p>
     {% endif %}
-    <p>NIDN: {{ user_profile.nim_nidn }}</p>
+    <p>NIM: {{ user_profile.nim_nidn }}</p>
     <p>Username: {{ user_profile.user.username }}</p>
     <p>Role: {{ user_profile.get_role_display }}</p>
 

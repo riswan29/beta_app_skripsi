@@ -61,7 +61,7 @@ def homeBot(request):
             "searches": shortened_history,
             "page": page,
         }
-        return render(request, "index.html", context)
+        return render(request, "indexx.html", context)
     else:
         search_query = request.GET.get('search_query')
 
@@ -88,14 +88,14 @@ def homeBot(request):
             "page": page,
             "search_query": search_query,
         }
-        return render(request, "index.html", context)
+        return render(request, "indexx.html", context)
 
 
 @login_required(login_url="login")
 def newChat(request):
     global session_messages
     session_messages = []
-    return render(request, "index.html", {})
+    return render(request, "indexx.html", {})
 
 @login_required(login_url="login")
 def loadChat(request, search):
@@ -118,7 +118,7 @@ def loadChat(request, search):
     session_messages.append({"sender": "bot", "content": message})
 
     context = {"messages": session_messages, "searches": search_history}
-    return render(request, "index.html", context)
+    return render(request, "indexx.html", context)
 
 @login_required(login_url="login")
 def save_to_excel(prompt, message):

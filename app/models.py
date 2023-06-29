@@ -68,7 +68,6 @@ class Jadwal(models.Model):
         ('Teknik Informatika', 'Teknik Informatika'),
         ('Teknik Elektro', 'Teknik Elektro'),
         ('Farmasi', 'Farmasi'),
-        # Tambahkan pilihan jurusan lainnya sesuai kebutuhan
     )
 
     SEMESTER_CHOICES = (
@@ -83,7 +82,7 @@ class Jadwal(models.Model):
         # Tambahkan pilihan semester lainnya sesuai kebutuhan
     )
 
-    dosen = models.ForeignKey(User, on_delete=models.CASCADE)
+    dosen = models.ForeignKey(UserProfile, on_delete=models.CASCADE,limit_choices_to={'role': 'dosen'})
     hari = models.CharField(max_length=10, choices=HARI_CHOICES)
     waktu = models.CharField(max_length=20)
     kode_mata_kuliah = models.CharField(max_length=20)
