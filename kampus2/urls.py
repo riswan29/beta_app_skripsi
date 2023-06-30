@@ -9,6 +9,9 @@ from app.views import change_password
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('jet', include('jet.urls', 'jet')),
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
+
     path('login/', login, name='login'),
     path('logout/', logoutUser, name="logout"),
     path('register/', register, name='register'),
