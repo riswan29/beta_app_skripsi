@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.forms import PasswordChangeForm
@@ -43,6 +44,8 @@ def login(request):
     return render(request, 'login.html', {'form':form})
 
 
+@staff_member_required(login_url='login')  # Hanya superuser atau admin yang dapat mengakses view ini
+@login_required(login_url='login')
 def register(request):
     form = RegistrationForm()
     if request.method == 'POST':
