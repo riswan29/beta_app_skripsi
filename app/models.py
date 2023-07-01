@@ -8,13 +8,32 @@ class UserProfile(models.Model):
         ('dosen', 'Dosen'),
         ('admin', 'Admin')
     )
+    JURUSAN_CHOICES = (
+        ('Teknik Informatika', 'Teknik Informatika'),
+        ('Teknik Elektro', 'Teknik Elektro'),
+        ('Farmasi', 'Farmasi'),
+    )
 
+    SEMESTER_CHOICES = (
+        ('semester1', 'Semester 1'),
+        ('semester2', 'Semester 2'),
+        ('semester3', 'Semester 3'),
+        ('semester4', 'Semester 4'),
+        ('semester5', 'Semester 5'),
+        ('semester6', 'Semester 6'),
+        ('semester7', 'Semester 7'),
+        ('semester8', 'Semester 8'),
+        # Tambahkan pilihan semester lainnya sesuai kebutuhan
+    )
     full_name= models.CharField(max_length=50)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    jurusan = models.CharField(max_length=50, choices=JURUSAN_CHOICES)
+    semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
     role = models.CharField(max_length=10, choices=USER_ROLES)
     nim_nidn = models.CharField(max_length=20)
     gambar = models.ImageField(upload_to='profile_images/', blank=True)
     alamat = models.TextField(blank=True)
+
 
     def __str__(self):
         return self.user.username

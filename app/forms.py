@@ -15,11 +15,13 @@ class FormLogin(forms.Form):
 
 class RegistrationForm(UserCreationForm):
     role = forms.ChoiceField(choices=UserProfile.USER_ROLES)
+    jurusan = forms.ChoiceField(choices=UserProfile.JURUSAN_CHOICES)
+    semester = forms.ChoiceField(choices=UserProfile.SEMESTER_CHOICES)
     nim_nidn = forms.CharField(max_length=10)
 
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2','nim_nidn', 'role']
+        fields = ['username', 'password1', 'password2','jurusan', 'semester', 'nim_nidn', 'role']
 
 class UserProfileEditForm(forms.ModelForm):
     class Meta:

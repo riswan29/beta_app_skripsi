@@ -54,6 +54,8 @@ def register(request):
             username = form.cleaned_data['username']
             nim_nidn = form.cleaned_data['nim_nidn']
             role = form.cleaned_data['role']
+            jurusan = form.cleaned_data['jurusan']
+            semester = form.cleaned_data['semester']
 
             # Cek apakah username atau nim sudah terdaftar
             if User.objects.filter(username=username).exists():
@@ -66,7 +68,7 @@ def register(request):
 
             # Username dan nim belum terdaftar, simpan objek User dan UserProfile
             user = User.objects.create_user(username=username, password=form.cleaned_data['password1'])
-            user_profile = UserProfile(user=user, role=role, nim_nidn=nim_nidn)
+            user_profile = UserProfile(user=user, role=role, nim_nidn=nim_nidn, jurusan=jurusan, semester=semester)
             user_profile.save()
 
             django_login(request, user)
