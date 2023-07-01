@@ -24,9 +24,11 @@ class RegistrationForm(UserCreationForm):
         fields = ['username', 'password1', 'password2','jurusan', 'semester', 'nim_nidn', 'role']
 
 class UserProfileEditForm(forms.ModelForm):
+    username = forms.CharField(max_length=150)  # Menambahkan field username
+
     class Meta:
         model = UserProfile
-        fields = ['full_name','gambar', 'alamat']
+        fields = ['username', 'full_name', 'gambar', 'alamat']  # Menambahkan field username
 
 
 class BuatJadwalForm(forms.ModelForm):

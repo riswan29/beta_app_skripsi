@@ -1,0 +1,18 @@
+<table>
+    <thead>
+        <tr>
+            <th>Nama Tugas</th>
+            <th>Deadline</th>
+            <th>File Tugas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tugas in tugas %}
+            <tr>
+                <td>{{ tugas.nama_tugas }}</td>
+                <td>{{ tugas.deadline }}</td>
+                <td><a href="{{ tugas.get_file_url }}">Unduh</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

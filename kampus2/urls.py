@@ -31,6 +31,8 @@ urlpatterns = [
     path('jadwal/', lihat_jadwal, name='jadwal'),
     path('buat-tugas/', buat_tugas, name='buat_tugas'),
     # download file
-    path('download-pdf/<int:tugas_id>/', download_pdf, name='download_pdf'),
+    path('download/<int:tugas_id>/', download_file, name='download_file'),
+    # tugas
+    path('tugas/', tampil_tugas, name='tugas'),
 
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

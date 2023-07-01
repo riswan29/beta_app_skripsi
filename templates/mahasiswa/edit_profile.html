@@ -3,6 +3,9 @@
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <label for="nama">Username</label>
+        {{ form.username }}
+        <br>
         <label for="nama">Nama Lengkap</label>
         {{ form.full_name }}
         <br>

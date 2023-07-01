@@ -1,3 +1,6 @@
+import os
+
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import get_object_or_404
@@ -137,6 +140,9 @@ def edit_mahasiswa_profile(request):
         form = UserProfileEditForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
+            new_username = request.POST.get('username')  # Mendapatkan username baru dari request
+            user_profile.update_username(new_username)  # Memperbarui username pada UserProfile
+
             return redirect('profile_mhs')
     else:
         form = UserProfileEditForm(instance=user_profile)
@@ -216,3 +222,24 @@ def download_pdf(request, tugas_id):
         response = HttpResponse(file.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=' + tugas.file_tugas.name.split('/')[-1]
         return response
+def download_file(request, tugas_id):
+    tugas = get_object_or_404(Tugas, id=tugas_id)
+    file_path = os.path.join(settings.MEDIA_ROOT, str(tugas.file_tugas))
+    with open(file_path, 'rb') as file:
+        response = HttpResponse(file.read(), content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
+        return response
+
+def tampil_tugas(request):
+    user = request.user  # Mendapatkan pengguna yang terautentikasi
+    user_profile = UserProfile.objects.get(user=user)  # Mendapatkan profil pengguna
+
+    # Mengambil jurusan dan semester dari profil pengguna
+    jurusan = user_profile.jurusan
+    semester = user_profile.semester
+
+    # Filter objek Tugas sesuai dengan jurusan dan semester pengguna
+    tugas = Tugas.objects.filter(jurusan=jurusan, semester=semester)
+    print(tugas)
+    context = {'tugas': tugas}
+    return render(request, 'mahasiswa/tampil_tugas.html', context)

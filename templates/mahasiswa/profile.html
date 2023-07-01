@@ -6,6 +6,8 @@
     <p>NIM: {{ user_profile.nim_nidn }}</p>
     <p>Username: {{ user_profile.user.username }}</p>
     <p>Role: {{ user_profile.get_role_display }}</p>
+    <p>Jurusan: {{ user_profile.get_jurusan_display }}</p>
+    <p>Semster: {{ user_profile.get_semester_display }}</p>
 
     {% if user_profile.alamat %}
         <p>Alamat: {{ user_profile.alamat }}</p>

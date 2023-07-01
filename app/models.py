@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -38,6 +39,10 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def update_username(self, new_username):
+        self.user.username = new_username
+        self.user.save()
 
 class Jadwal(models.Model):
     METODE_PEMBELAJARAN_CHOICES = (
@@ -124,3 +129,5 @@ class Tugas(models.Model):
         return self.nama_tugas
     def get_file_url(self):
         return reverse('download_file', kwargs={'tugas_id': self.id})
+    def get_file_path(self):
+            return os.path.join('file_tugas', str(self.file_tugas))
