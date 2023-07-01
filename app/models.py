@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class UserProfile(models.Model):
     USER_ROLES = (
@@ -74,7 +75,8 @@ class Jadwal(models.Model):
     # dosen = models.ForeignKey(User, on_delete=models.CASCADE)
     dosen = models.ForeignKey(UserProfile, on_delete=models.CASCADE, limit_choices_to={'role': 'dosen'})
     hari = models.CharField(max_length=10, choices=HARI_CHOICES)
-    waktu = models.CharField(max_length=20)
+    waktu = models.TimeField()
+    waktu_selesai=models.TimeField()
     kode_mata_kuliah = models.CharField(max_length=20)
     nama_mata_kuliah = models.CharField(max_length=100)
     sks = models.IntegerField()
@@ -93,7 +95,10 @@ class Tugas(models.Model):
         ('Farmasi', 'Farmasi'),
         # Tambahkan pilihan jurusan lainnya sesuai kebutuhan
     )
-
+    JENIS_CHOICES = {
+        ('tugas', 'Tugas'),
+        ('materi', 'Materi'),
+    }
     SEMESTER_CHOICES = (
         ('semester1', 'Semester 1'),
         ('semester2', 'Semester 2'),
@@ -107,6 +112,7 @@ class Tugas(models.Model):
     )
     nama_pengguna = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     nama_tugas = models.CharField(max_length=100)
+    jenis = models.CharField(max_length=50, choices=JENIS_CHOICES)
     tanggal_dibuat = models.DateTimeField(default=datetime.now)
     deadline = models.DateTimeField()
     keterangan = models.TextField(blank=True)
@@ -116,3 +122,5 @@ class Tugas(models.Model):
 
     def __str__(self):
         return self.nama_tugas
+    def get_file_url(self):
+        return reverse('download_file', kwargs={'tugas_id': self.id})

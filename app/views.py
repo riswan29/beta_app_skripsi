@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout,authenticate
@@ -8,8 +9,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .forms import *
 from .models import UserProfile
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 def login(request):
     form = FormLogin()
@@ -90,34 +89,6 @@ def dosen(request):
     return render(request, 'dosen/dashboard.html')
 
 
-def pageAdmin(request):
-    if request.method == 'POST':
-        form = CourseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
-    else:
-        form = CourseForm()
-    return render(request, 'pageAdmin/add_jadwal.html', {'form': form})
-
-def dosenList(request):
-    dosen_users = User.objects.filter(userprofile__role='dosen')
-    return render(request, 'pageAdmin/dashboard.html', {'dosen_users': dosen_users})
-
-@login_required(login_url="login")
-def update_profile(request):
-    mahasiswa = request.user.mahasiswa
-
-    if request.method == 'POST':
-        form = MahasiswaProfileForm(request.POST, request.FILES, instance=mahasiswa)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profil berhasil diperbarui.')
-            return redirect('/mahasiswa/dashboard')
-    else:
-        form = MahasiswaProfileForm(instance=mahasiswa)
-
-    return render(request, 'mahasiswa/update_profile.html', {'form': form})
 
 def logoutUser(request):
     logout(request)
@@ -237,3 +208,11 @@ def buat_tugas(request):
     }
 
     return render(request, 'dosen/buat_tugas.html', context)
+# download file
+def download_pdf(request, tugas_id):
+    tugas = get_object_or_404(Tugas, id=tugas_id)
+    file_path = tugas.file_tugas.path
+    with open(file_path, 'rb') as file:
+        response = HttpResponse(file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=' + tugas.file_tugas.name.split('/')[-1]
+        return response
