@@ -63,7 +63,7 @@ def homeBot(request):
         }
         # return render(request, "indexx.html", context)
 
-        return render(request, "index copy.html", context)
+        return render(request, "indexx.html", context)
     else:
         search_query = request.GET.get('search_query')
 
@@ -92,7 +92,7 @@ def homeBot(request):
         }
 
         # return render(request, "indexx.html", context)
-    return render(request, "index copy.html", context)
+    return render(request, "indexx.html", context)
 
 
 @login_required(login_url="login")
