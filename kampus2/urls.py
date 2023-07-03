@@ -34,5 +34,11 @@ urlpatterns = [
     path('download/<int:tugas_id>/', download_file, name='download_file'),
     # tugas
     path('tugas/', tampil_tugas, name='tugas'),
+    path('kirim-tugas/<int:tugas_id>/', kirim_tugas, name='kirim_tugas'),
+    path('berhasil-kirim-tugas/<int:tampung_id>/', berhasil_kirim_tugas, name='berhasil_kirim_tugas'),
+    path('halaman-tugas-dosen/', halaman_tugas_dosen, name='halaman_tugas_dosen'),
+
+
+
 
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

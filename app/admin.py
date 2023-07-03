@@ -17,3 +17,5 @@ admin.site.register(Jadwal, JadwalAdmin)
 class TugasAdmin(admin.ModelAdmin):
     list_display = ('nama_tugas', 'nama_pengguna', 'tanggal_dibuat', 'deadline')
 admin.site.register(Tugas, TugasAdmin)
+
+admin.site.register(TampungTugas)

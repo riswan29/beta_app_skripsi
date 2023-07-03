@@ -1,0 +1,40 @@
+<table>
+    <thead>
+      <tr>
+        <th>Nama Tugas</th>
+        <th>Tanggal Dibuat</th>
+        <th>Nama Pengirim</th>
+        <th>Tanggal Dikirim</th>
+        <th>File Tugas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tugas in tugas_dosen %}
+        <tr>
+          <td>{{ tugas.nama_tugas }}</td>
+          <td>{{ tugas.tanggal_dibuat }}</td>
+          <td>
+            {% for tampung in tugas.tampungtugas_set.all %}
+              {{ tampung.mahasiswa.username }}<br>
+            {% empty %}
+              (Belum ada pengirim)
+            {% endfor %}
+          </td>
+          <td>
+            {% for tampung in tugas.tampungtugas_set.all %}
+              {{ tampung.tanggal_kirim }}<br>
+            {% empty %}
+              -
+            {% endfor %}
+          </td>
+          <td>
+            {% for tampung in tugas.tampungtugas_set.all %}
+              <a href="{{ tampung.file_tugas.url }}" target="_blank">Download</a><br>
+            {% empty %}
+              -
+            {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>

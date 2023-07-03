@@ -76,7 +76,7 @@ class Jadwal(models.Model):
         # Tambahkan pilihan semester lainnya sesuai kebutuhan
     )
 
-    dosen = models.ForeignKey(UserProfile, on_delete=models.CASCADE,limit_choices_to={'role': 'dosen'})
+    # dosen = models.ForeignKey(UserProfile, on_delete=models.CASCADE,limit_choices_to={'role': 'dosen'})
     # dosen = models.ForeignKey(User, on_delete=models.CASCADE)
     dosen = models.ForeignKey(UserProfile, on_delete=models.CASCADE, limit_choices_to={'role': 'dosen'})
     hari = models.CharField(max_length=10, choices=HARI_CHOICES)
@@ -125,9 +125,19 @@ class Tugas(models.Model):
     jurusan = models.CharField(max_length=50, choices=JURUSAN_CHOICES)
     semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
 
+
     def __str__(self):
         return self.nama_tugas
     def get_file_url(self):
         return reverse('download_file', kwargs={'tugas_id': self.id})
     def get_file_path(self):
             return os.path.join('file_tugas', str(self.file_tugas))
+
+class TampungTugas(models.Model):
+    tugas = models.ForeignKey(Tugas, on_delete=models.CASCADE)
+    mahasiswa = models.ForeignKey(User, on_delete=models.CASCADE)
+    tanggal_kirim = models.DateTimeField(auto_now_add=True)
+    file_tugas = models.FileField(upload_to='tugas_files/')
+
+    def __str__(self):
+        return f"Tugas: {self.tugas.nama_tugas} - Mahasiswa: {self.mahasiswa.username}"

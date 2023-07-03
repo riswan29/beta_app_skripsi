@@ -103,6 +103,9 @@
         width: 100%;
         margin-left: 0;
     }
+    .text-mobile {
+        margin: 10px;
+      }
 }
 
 @media (max-width: 991.98px) {
@@ -118,6 +121,9 @@
         width: 100%;
         margin-left: 0;
     }
+    .text-mobile {
+        margin: 10px;
+      }
 }
 
 
@@ -185,7 +191,7 @@
     color: var(--primary);
 }
 
-.content .navbar .sidebar-toggler,
+.content .navbar 
 .content .navbar .navbar-nav .nav-link i {
     width: 40px;
     height: 40px;
@@ -214,6 +220,9 @@
     .content .navbar .navbar-nav .nav-link {
         margin-left: 15px;
     }
+    .text-mobile {
+        margin: 10px;
+      }
 }
 
 
@@ -244,4 +253,78 @@
     border-bottom-color: var(--primary);
 }
 
+
+.sidebar-toggler {
+    display: none; /* Sembunyikan secara default */
+}
+
+/* Tampilkan hanya ketika media berbentuk mobile */
+@media (max-width: 767px) {
+    .sidebar-toggler{
+        display: block;
+    }
+    .box2{
+        width: 100%;
+        font-size: 100%;
+    }
+    .text-mobile {
+        margin: 1px;
+        font-size: 11px;
+      }
+}
+
+
+
+.chat-container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.chat {
+    flex: 1;
+    padding: 5px;
+}
+.table {
+    align-items: center;
+}
+.form-group {
+    margin-bottom: 0;
+}
+.send-button {
+    margin-top: 8px;
+}
+.message {
+    margin-bottom: 20px;
+
+}
+.box1{
+    display: block;
+    width:100%;
+    height:30px;
+    background:rgb(222, 228, 222);
+    margin-right: 10px;
+    text-align: center;
+    
+}
+.box2 {
+    font-size: 15px;
+    display: flex;
+    width:100%;
+    height:100px;
+    background:rgb(239, 243, 239);
+    padding: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+.footer3 {
+    position: fixed;
+    bottom: 0;
+    width: 70%;
+           
+}
+
+.h3 {
+	color: #070707;
+}
 

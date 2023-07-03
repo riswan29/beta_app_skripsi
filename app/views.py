@@ -243,3 +243,34 @@ def tampil_tugas(request):
     print(tugas)
     context = {'tugas': tugas}
     return render(request, 'mahasiswa/tampil_tugas.html', context)
+
+def kirim_tugas(request, tugas_id):
+    tugas = get_object_or_404(Tugas, id=tugas_id)
+
+    if request.method == 'POST':
+        file_tugas = request.FILES.get('file_tugas')
+        # Lakukan validasi dan penyimpanan file tugas di sini
+
+        # Buat objek TampungTugas baru
+        tampung_tugas = TampungTugas.objects.create(
+            tugas=tugas,
+            mahasiswa=request.user,
+            file_tugas=file_tugas
+        )
+
+        # Redirect ke halaman berhasil mengirim tugas
+        return redirect('berhasil_kirim_tugas', tampung_id=tampung_tugas.id)
+
+    context = {'tugas': tugas}
+    return render(request, 'mahasiswa/kirim_tugas.html', context)
+
+def berhasil_kirim_tugas(request, tampung_id):
+    tampung_tugas = get_object_or_404(TampungTugas, id=tampung_id)
+    context = {'tampung_tugas': tampung_tugas}
+    return render(request, 'mahasiswa/berhasil_kirim_tugas.html', context)
+@login_required
+def halaman_tugas_dosen(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    tugas_dosen = Tugas.objects.filter(nama_pengguna=user_profile)
+    context = {'tugas_dosen': tugas_dosen}
+    return render(request, 'dosen/halaman_tugas_dosen.html', context)

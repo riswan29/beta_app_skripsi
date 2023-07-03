@@ -1,7 +1,3 @@
-{% load static %}
-{% block content %}
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,15 +7,15 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
+    
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
+    
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{% static 'css/style.css'%}" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -37,33 +33,18 @@
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-light navbar-light">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><img src="{% static 'img/lg.png'%}" alt="" style="width: 100px; height: 70px;">Dosen</h3>
+                    <h3 class="text-primary"><img src="img/lg.png" alt="" style="width: 100px; height: 70px;">Dosen</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-
+                        
                     </div>
-
+                    
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="/" class="nav-item nav-link active">Dashboard</a>
+                    <a href="index.html" class="nav-item nav-link active">Dashboard</a>
                     <div class="nav-item dropdown">
-
-                    </div>
-                <div class="navbar-nav w-100">
-                    <a href="{% url 'jadwal' %}" class="nav-item nav-link active">Jadwal</a>
-                    <div class="nav-item dropdown">
-
-                    </div>
-                <div class="navbar-nav w-100">
-                    <a href="{% url 'buat_tugas' %" class="nav-item nav-link active">Buat Tugas</a>
-                    <div class="nav-item dropdown">
-
-                    </div>
-                <div class="navbar-nav w-100">
-                    <a href="{% url 'halaman_tugas_dosen' %}" class="nav-item nav-link active">Daftar Tugas</a>
-                    <div class="nav-item dropdown">
-
+                        
                     </div>
             </nav>
         </div>
@@ -90,7 +71,7 @@
                             Dashboard
                         </a>
                     </div>
-
+                    
                     <div class="nav-item">
                         <a href="tugas.html" button type="button" class="btn btn-primary">
                             Tugas
@@ -99,13 +80,13 @@
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="{% static 'img/pp.jpg'%}" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">{{user.username}}</span>
+                            <img class="rounded-circle me-lg-2" src="img/pp.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">Dosen</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                             <a href="#" class="dropdown-item">My Profile</a>
                             <a href="#" class="dropdown-item">Settings</a>
-                            <a href="{% url 'logout' %}" class="dropdown-item">Log Out</a>
+                            <a href="#" class="dropdown-item">Log Out</a>
                         </div>
                     </div>
                 </div>
@@ -203,7 +184,7 @@
                 </div>
                 </div>
                 <div class="container-fluid pt-4 px-4">
-                    <div class="bg-light text-center rounded p-4">
+                    <div class="bg-light text-center rounded p-4"> 
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Table Kiriman Tugas Mahasiswa Terbaru</h6>
                         <a href="">Show All</a>
@@ -272,9 +253,9 @@
                 <div class="bg-light rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; All Right Reserved.
+                            &copy; All Right Reserved. 
                         </div>
-
+                        
                     </div>
                 </div>
             </div>
@@ -288,8 +269,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="{% static 'js/main.js'%}"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
-{% endblock content %}
