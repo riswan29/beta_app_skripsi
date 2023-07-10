@@ -37,8 +37,9 @@ urlpatterns = [
     path('kirim-tugas/<int:tugas_id>/', kirim_tugas, name='kirim_tugas'),
     path('berhasil-kirim-tugas/<int:tampung_id>/', berhasil_kirim_tugas, name='berhasil_kirim_tugas'),
     path('halaman-tugas-dosen/', halaman_tugas_dosen, name='halaman_tugas_dosen'),
+    path('detail-tugas/<int:tugas_id>/', detail_tugas, name='detail_tugas'),
     path('sidebar', sidebar, name='sidebar'),
-
+    path('summernote/', include('django_summernote.urls')),
 
 
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

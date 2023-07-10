@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-
+from django_summernote.widgets import SummernoteWidget
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 from django.contrib.admin import widgets
@@ -41,6 +41,7 @@ class DateTimeInput(forms.DateTimeInput):
 
 class TugasForm(forms.ModelForm):
     deadline = forms.DateTimeField(widget=widgets.AdminDateWidget())
+    keterangan = forms.CharField(widget=SummernoteWidget())
 
     class Meta:
         model = Tugas

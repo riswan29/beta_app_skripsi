@@ -46,75 +46,75 @@
 
 <body class="crm_body_bg">
 
-<!-- start navbar -->
+    <!-- start navbar -->
 
-<nav class="sidebar">
-    <div class="logo d-flex justify-content-between">
-        <a class="large_logo" href="index.html"><img src="{% static 'img/logo.png'%}" alt></a>
-        <a class="small_logo" href="index.html"><img src="{% static 'img/mini_logo.png'%}" alt></a>
-        <div class="sidebar_close_icon d-lg-none">
-            <i class="ti-close"></i>
+    <nav class="sidebar">
+        <div class="logo d-flex justify-content-between">
+            <a class="large_logo" href="index.html"><img src="{% static 'img/logo.png'%}" alt></a>
+            <a class="small_logo" href="index.html"><img src="{% static 'img/mini_logo.png'%}" alt></a>
+            <div class="sidebar_close_icon d-lg-none">
+                <i class="ti-close"></i>
+            </div>
         </div>
-    </div>
-    <ul id="sidebar_menu">
-        <li>
-            <a href="{% url 'dosen' %}" aria-expanded="false">
-                <div class="nav_icon_small">
-                    <img src="{% static 'img/menu-icon/dashboard.svg'%}" alt>
-                </div>
-                <div class="nav_title">
-                    <span>Dasboard</span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'chatbot' %}" aria-expanded="false">
-                <div class="nav_icon_small">
-                    <img src="{% static 'img/menu-icon/2.svg'%}" alt>
-                </div>
-                <div class="nav_title">
-                    <span>Chatbot </span>
-                </div>
-            </a>
-        </li>
-        <li class>
-            <a class="has-arrow" href="#" aria-expanded="false">
-                <div class="nav_icon_small">
-                    <img src="{% static 'img/menu-icon/5.svg'%}" alt>
-                </div>
-                <div class="nav_title">
-                    <span>Tugas </span>
-                </div>
-            </a>
-            <ul>
-                <li><a href="{% url 'buat_tugas' %}">Buat Tugas</a></li>
-                <li><a href="{% url 'tugas' %}">List Tugas</a></li>
-                <li><a href="chat.html">Pengirim</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-            </ul>
-        </li>
-        <li class>
-            <a class="has-arrow" href="#" aria-expanded="false">
-                <div class="nav_icon_small">
-                    <img src="{% static 'img/menu-icon/16.svg'%}" alt>
-                </div>
-                <div class="nav_title">
-                    <span>Pages</span>
-                </div>
-            </a>
-            <ul>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="resister.html">Register</a></li>
-                <li><a href="error_400.html">Error 404</a></li>
-                <li><a href="error_500.html">Error 500</a></li>
-                <li><a href="forgot_pass.html">Forgot Password</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-            </ul>
-        </li>
-    </ul>
-</nav>
+        <ul id="sidebar_menu">
+            <li>
+                <a href="{% url 'dosen' %}" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/dashboard.svg'%}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Dasboard</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'chatbot' %}" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/2.svg'%}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Chatbot </span>
+                    </div>
+                </a>
+            </li>
+            <li class>
+                <a class="has-arrow" href="#" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/5.svg'%}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Tugas </span>
+                    </div>
+                </a>
+                <ul>
+                    <li><a href="{% url 'buat_tugas' %}">Buat Tugas</a></li>
+                    <li><a href="{% url 'halaman_tugas_dosen' %}">List Tugas</a></li>
+                    <li><a href="chat.html">Pengirim</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                </ul>
+            </li>
+            <li class>
+                <a class="has-arrow" href="#" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/16.svg'%}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Pages</span>
+                    </div>
+                </a>
+                <ul>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="resister.html">Register</a></li>
+                    <li><a href="error_400.html">Error 404</a></li>
+                    <li><a href="error_500.html">Error 500</a></li>
+                    <li><a href="forgot_pass.html">Forgot Password</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 
-<!-- end navbar -->
+    <!-- end navbar -->
     <section class="main_content dashboard_part large_header_bg">
 
         <div class="container-fluid g-0">
@@ -147,7 +147,8 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a class="bell_notification_clicker" href="#"> <img src="{% static 'img/icon/bell.svg'%}" alt>
+                                    <a class="bell_notification_clicker" href="#"> <img
+                                            src="{% static 'img/icon/bell.svg'%}" alt>
                                         <span>2</span>
                                     </a>
 
@@ -177,7 +178,8 @@
 
                                 </li>
                                 <li>
-                                    <a class="CHATBOX_open" href="#"> <img src="{% static 'img/icon/msg.svg'%}" alt> <span>2</span>
+                                    <a class="CHATBOX_open" href="#"> <img src="{% static 'img/icon/msg.svg'%}" alt>
+                                        <span>2</span>
                                     </a>
                                 </li>
                             </div>

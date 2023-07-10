@@ -277,3 +277,8 @@ def halaman_tugas_dosen(request):
     tugas_dosen = Tugas.objects.filter(nama_pengguna=user_profile)
     context = {'tugas_dosen': tugas_dosen}
     return render(request, 'dosen/halaman_tugas_dosen.html', context)
+
+def detail_tugas(request, tugas_id):
+    tugas = get_object_or_404(Tugas, id=tugas_id)
+    context = {'tugas': tugas}
+    return render(request, 'dosen/detail_tugas.html', context)

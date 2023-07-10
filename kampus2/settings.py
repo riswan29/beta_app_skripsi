@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'chatbot',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
