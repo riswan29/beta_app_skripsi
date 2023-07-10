@@ -13,6 +13,9 @@ from django.contrib import messages
 from .forms import *
 from .models import UserProfile
 
+
+def sidebar(request):
+    return render(request, 'dosen/menu.html')
 def login(request):
     form = FormLogin()
     if request.user.is_authenticated:

@@ -19,6 +19,7 @@ search_history = []
 MAX_HISTORY_LENGTH = 20  # Jumlah maksimum riwayat pencarian yang ditampilkan
 SHORTENED_LENGTH = 20  # Panjang maksimum riwayat yang dipersingkat
 ITEMS_PER_PAGE = 3  # Jumlah item yang ditampilkan per halaman
+
 @login_required(login_url="login")
 def homeBot(request):
     if request.method == "POST":
