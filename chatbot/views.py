@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 import openai
 from openpyxl import Workbook,load_workbook
@@ -8,7 +8,7 @@ from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .key import Keys
-
+from django.http import HttpResponse
 
 openai.api_key = Keys
 
@@ -35,40 +35,31 @@ def homeBot(request):
         )
         message = completions.choices[0].text
 
-        # Simpan history pencarian terkait dengan pengguna yang sedang login
+        # Save the prompt and response to the database
         chat_history = ChatHistory(user=request.user, prompt=prompt, message=message)
         chat_history.save()
 
-        # Menambahkan prompt dan respon ke dalam daftar pesan sesi
+        # Add the prompt and response to the session messages
         session_messages.append({"sender": "user", "content": prompt})
         session_messages.append({"sender": "bot", "content": message})
 
-        # Menampilkan history pencarian pengguna yang sedang login
+        # Display the user's search history
         search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
         paginator = Paginator(search_history, ITEMS_PER_PAGE)
-
         page_number = request.GET.get("page", 1)
         page = paginator.get_page(page_number)
 
-        shortened_history = []
-        for history in page:
-            prompt = history.prompt
-            if len(prompt) > SHORTENED_LENGTH:  # Batasi panjang prompt menjadi SHORTENED_LENGTH karakter
-                prompt = prompt[:SHORTENED_LENGTH-3] + "..."
-            shortened_history.append(prompt)
-
         context = {
             "messages": session_messages,
-            "searches": shortened_history,
+            "searches": search_history,
             "page": page,
         }
-        # return render(request, "indexx.html", context)
 
         return render(request, "indexx.html", context)
     else:
         search_query = request.GET.get('search_query')
 
-        # Menampilkan history pencarian pengguna yang sedang login
+        # Display the user's search history
         search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
 
         if search_query:
@@ -78,23 +69,14 @@ def homeBot(request):
         page_number = request.GET.get("page", 1)
         page = paginator.get_page(page_number)
 
-        shortened_history = []
-        for history in page:
-            prompt = history.prompt
-            if len(prompt) > SHORTENED_LENGTH:  # Batasi panjang prompt menjadi SHORTENED_LENGTH karakter
-                prompt = prompt[:SHORTENED_LENGTH-3] + "..."
-            shortened_history.append(prompt)
-
         context = {
             "messages": session_messages,
-            "searches": shortened_history,
+            "searches": search_history,
             "page": page,
             "search_query": search_query,
         }
 
-        # return render(request, "indexx.html", context)
-    return render(request, "indexx.html", context)
-
+        return render(request, "indexx.html", context)
 
 @login_required(login_url="login")
 def newChat(request):
@@ -103,27 +85,18 @@ def newChat(request):
     return render(request, "indexx.html", {})
 
 @login_required(login_url="login")
-def loadChat(request, search):
-    global session_messages
-    session_messages = []
-    prompt = search
-    model_engine = "text-davinci-003"
+def loadChat(request, search_id):
+    try:
+        # Mengambil respons yang tersimpan dalam database berdasarkan ID pencarian
+        chat_history = ChatHistory.objects.get(id=search_id)
+        prompt = chat_history.prompt
+        message = chat_history.message
 
-    completions = openai.Completion.create(
-        engine=model_engine,
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        temperature=0.5,
-    )
-    message = completions.choices[0].text
-
-    # Menambahkan prompt dan respon ke dalam daftar pesan sesi
-    session_messages.append({"sender": "user", "content": prompt})
-    session_messages.append({"sender": "bot", "content": message})
-
-    context = {"messages": session_messages, "searches": search_history}
-    return render(request, "indexx.html", context)
+        context = {"prompt": prompt, "message": message}
+        return render(request, "histo.html", context)
+    except ChatHistory.DoesNotExist:
+        # Tidak ada respons yang tersimpan dalam database untuk ID pencarian yang dipilih
+        return redirect("chatbot")
 
 @login_required(login_url="login")
 def save_to_excel(prompt, message):
