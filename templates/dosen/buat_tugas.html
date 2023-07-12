@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Analytic</title>
-    <link rel="icon" href="img/mini_logo.png" type="image/png">
+    <link rel="icon" href="{% static 'img/mini_logo.png' %}" type="image/png">
 
     <link rel="stylesheet" href="{% static 'css/bootstrap1.min.css' %}" />
 
@@ -50,8 +50,8 @@
 
     <nav class="sidebar">
         <div class="logo d-flex justify-content-between">
-            <a class="large_logo" href="index.html"><img src="img/logo.png" alt></a>
-            <a class="small_logo" href="index.html"><img src="img/mini_logo.png" alt></a>
+            <a class="large_logo" href="index.html"><img src="{% static 'img/logo.png'%}" alt></a>
+            <a class="small_logo" href="index.html"><img src="{% static 'img/mini_logo.png'%}" alt></a>
             <div class="sidebar_close_icon d-lg-none">
                 <i class="ti-close"></i>
             </div>
@@ -88,7 +88,7 @@
                 </a>
                 <ul>
                     <li><a href="{% url 'buat_tugas' %}">Buat Tugas</a></li>
-                    <li><a href="{% url 'tugas' %}">List Tugas</a></li>
+                    <li><a href="{% url 'halaman_tugas_dosen' %}">List Tugas</a></li>
                     <li><a href="chat.html">Pengirim</a></li>
                     <li><a href="faq.html">FAQ</a></li>
                 </ul>
@@ -113,7 +113,7 @@
             </li>
         </ul>
     </nav>
-
+    
     <section class="main_content dashboard_part large_header_bg">
 
         <div class="container-fluid g-0">
@@ -146,7 +146,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a class="bell_notification_clicker" href="#"> <img src="img/icon/bell.svg" alt>
+                                    <a class="bell_notification_clicker" href="#"> <img src="{% static 'img/icon/bell.svg' %}" alt>
                                         <span>2</span>
                                     </a>
 
@@ -158,7 +158,7 @@
 
                                             <div class="single_notify d-flex align-items-center">
                                                 <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/2.png" alt></a>
+                                                    <a href="#"><img src="{% static 'img/staf/2.png' %}" alt></a>
                                                 </div>
                                                 <div class="notify_content">
                                                     <a href="#">
@@ -168,65 +168,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/4.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>Awesome packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/3.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>what a packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/2.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>Cool Marketing </h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/4.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>Awesome packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/3.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>what a packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="nofity_footer">
                                             <div class="submit_button text-center pt_20">
@@ -237,12 +178,12 @@
 
                                 </li>
                                 <li>
-                                    <a class="CHATBOX_open" href="#"> <img src="img/icon/msg.svg" alt> <span>2</span>
+                                    <a class="CHATBOX_open" href="#"> <img src="{% static 'img/icon/msg.svg' %}" alt> <span>2</span>
                                     </a>
                                 </li>
                             </div>
                             <div class="profile_info">
-                                <img src="img/client_img.png" alt="#">
+                                <img src="{% static 'img/client_img.png' %}" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
                                         <p>Neurologist </p>
@@ -363,54 +304,6 @@
                 </svg>
             </div>
             <h3>Chat with us</h3>
-            <div class="Chat_Listed_member">
-                <ul>
-                    <li>
-                        <a href="#">
-                            <div class="member_thumb">
-                                <img src="img/staf/1.png" alt>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="member_thumb">
-                                <img src="img/staf/2.png" alt>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="member_thumb">
-                                <img src="img/staf/3.png" alt>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="member_thumb">
-                                <img src="img/staf/4.png" alt>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="member_thumb">
-                                <img src="img/staf/5.png" alt>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="member_thumb">
-                                <div class="more_member_count">
-                                    <span>90+</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
         <div class="CHAT_POPUP_BODY">
             <p class="mesaged_send_date">

@@ -11,7 +11,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Analytic</title>
-    <link rel="icon" href="img/mini_logo.png" type="image/png">
+    <link rel="icon" href="{% static 'img/mini_logo.png' %}" type="image/png">
 
     <link rel="stylesheet" href="{% static 'css/bootstrap1.min.css' %}" />
 
@@ -52,8 +52,8 @@
     <!-- start navbar -->
     <nav class="sidebar">
         <div class="logo d-flex justify-content-between">
-            <a class="large_logo" href="index.html"><img src="img/logo.png" alt></a>
-            <a class="small_logo" href="index.html"><img src="img/mini_logo.png" alt></a>
+            <a class="large_logo" href="index.html"><img src="{% static 'img/logo.png'%}" alt></a>
+            <a class="small_logo" href="index.html"><img src="{% static 'img/mini_logo.png'%}" alt></a>
             <div class="sidebar_close_icon d-lg-none">
                 <i class="ti-close"></i>
             </div>
@@ -148,7 +148,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <a class="bell_notification_clicker" href="#"> <img src="img/icon/bell.svg" alt>
+                                    <a class="bell_notification_clicker" href="#"> <img src="{% static 'img/icon/bell.svg' %}" alt>
                                         <span>2</span>
                                     </a>
 
@@ -169,66 +169,6 @@
                                                     <p>Lorem ipsum dolor sit amet</p>
                                                 </div>
                                             </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/4.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>Awesome packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/3.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>what a packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/2.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>Cool Marketing </h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/4.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>Awesome packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="single_notify d-flex align-items-center">
-                                                <div class="notify_thumb">
-                                                    <a href="#"><img src="img/staf/3.png" alt></a>
-                                                </div>
-                                                <div class="notify_content">
-                                                    <a href="#">
-                                                        <h5>what a packages</h5>
-                                                    </a>
-                                                    <p>Lorem ipsum dolor sit amet</p>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="nofity_footer">
                                             <div class="submit_button text-center pt_20">
@@ -239,16 +179,15 @@
 
                                 </li>
                                 <li>
-                                    <a class="CHATBOX_open" href="#"> <img src="img/icon/msg.svg" alt> <span>2</span>
+                                    <a class="CHATBOX_open" href="#"> <img src="{% static 'img/icon/msg.svg' %}" alt> <span>2</span>
                                     </a>
                                 </li>
                             </div>
                             <div class="profile_info">
-                                <img src="img/client_img.png" alt="#">
+                                <img src="{% static 'img/client_img.png' %}" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
-                                        <p>Neurologist </p>
-                                        <h5>Dr. Robar Smith</h5>
+                                        <h5>{{user.username}}</h5>
                                     </div>
                                     <div class="profile_info_details">
                                         <a href="#">My Profile </a>
@@ -302,17 +241,29 @@
                                         </div>
                                     </div>
                                     <center>
-                                    <button onclick="newChat()" class="btn_1">New Chat</button>
+                                        <button onclick="newChat()" class="btn_1">New Chat</button>
                                     </center>
                                     <ul id="history">
+                                        {% for search in page %}
                                         <li>
-                                            {% for search in searches %}
-                                                <div class="message_pre_left">
-                                                        <a href="{% url 'loadChat' search.id %}">{{ search.prompt }}</a>
-                                                </div>
-                                            {% endfor %}
+                                            <div class="message_pre_left">
+                                                <a href="{% url 'loadChat' search.id %}">{{ search.prompt }}</a>
+                                            </div>
                                         </li>
+                                        {% endfor %}
                                     </ul>
+                                    {% if page.has_previous or page.has_next %}
+                                    <div class="pagination">
+                                        {% if page.has_previous %}
+                                        <a href="?page={{ page.previous_page_number }}">previous</a>
+                                        {% endif %}
+                                        <span class="current-page">{{ page.number }} of
+                                            {{ page.paginator.num_pages }}</span>
+                                        {% if page.has_next %}
+                                        <a href="?page={{ page.next_page_number }}">next</a>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="messages_chat mb_30" id="content">
@@ -562,6 +513,7 @@
         function newChat() {
             window.location.href = "{% url 'newChat' %}";
         }
+
         function appendMessage(sender, content) {
             var messages = document.getElementById("messages");
             var messageElement = document.createElement("li");

@@ -18,7 +18,7 @@ session_messages = []
 search_history = []
 MAX_HISTORY_LENGTH = 20  # Jumlah maksimum riwayat pencarian yang ditampilkan
 SHORTENED_LENGTH = 20  # Panjang maksimum riwayat yang dipersingkat
-ITEMS_PER_PAGE = 3  # Jumlah item yang ditampilkan per halaman
+ITEMS_PER_PAGE = 5  # Jumlah item yang ditampilkan per halaman
 
 @login_required(login_url="login")
 def homeBot(request):
@@ -68,6 +68,11 @@ def homeBot(request):
         paginator = Paginator(search_history, ITEMS_PER_PAGE)
         page_number = request.GET.get("page", 1)
         page = paginator.get_page(page_number)
+
+        # Limit jumlah history yang ditampilkan sesuai halaman yang dipilih
+        start_index = (page.number - 1) * ITEMS_PER_PAGE
+        end_index = start_index + ITEMS_PER_PAGE
+        search_history = page[start_index:end_index]
 
         context = {
             "messages": session_messages,

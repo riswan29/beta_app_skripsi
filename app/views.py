@@ -117,6 +117,8 @@ def edit_dosen_profile(request):
         form = UserProfileEditForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
+            new_username = request.POST.get('username')  # Mendapatkan username baru dari request
+            user_profile.update_username(new_username)  # Memperbarui username pada UserProfile
             return redirect('profile_dsn')
     else:
         form = UserProfileEditForm(instance=user_profile)
