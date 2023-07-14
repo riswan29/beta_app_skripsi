@@ -92,7 +92,15 @@ def mahasiswa(request):
 
 @login_required(login_url="login")
 def dosen(request):
-    return render(request, 'dosen/dashboard.html')
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    # Mengambil jadwal berdasarkan pengguna (user) yang sedang login
+    jadwal = Jadwal.objects.filter(dosen=user_profile)
+    print(jadwal)
+    context = {
+        'jadwal': jadwal
+    }
+    return render(request, 'dosen/dashboard.html',context)
 
 
 
@@ -284,3 +292,11 @@ def detail_tugas(request, tugas_id):
     tugas = get_object_or_404(Tugas, id=tugas_id)
     context = {'tugas': tugas}
     return render(request, 'dosen/detail_tugas.html', context)
+# buat view untuk hapus tugas
+from django.contrib import messages
+def hapus_tugas(request, tugas_id):
+    tugas = get_object_or_404(Tugas, id=tugas_id)
+    if request.method == 'POST':
+        tugas.delete()
+        messages.success(request, 'Tugas berhasil dihapus')
+        return redirect('halaman_tugas_dosen')
