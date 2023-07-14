@@ -17,14 +17,14 @@ class UserProfile(models.Model):
     )
 
     SEMESTER_CHOICES = (
-        ('semester1', 'Semester 1'),
-        ('semester2', 'Semester 2'),
-        ('semester3', 'Semester 3'),
-        ('semester4', 'Semester 4'),
-        ('semester5', 'Semester 5'),
-        ('semester6', 'Semester 6'),
-        ('semester7', 'Semester 7'),
-        ('semester8', 'Semester 8'),
+        ('Semester 1', 'Semester 1'),
+        ('Semester 2', 'Semester 2'),
+        ('Semester 3', 'Semester 3'),
+        ('Semester 4', 'Semester 4'),
+        ('Semester 5', 'Semester 5'),
+        ('Semester 6', 'Semester 6'),
+        ('Semester 7', 'Semester 7'),
+        ('Semester 8', 'Semester 8'),
         # Tambahkan pilihan semester lainnya sesuai kebutuhan
     )
     full_name= models.CharField(max_length=50)
@@ -46,16 +46,16 @@ class UserProfile(models.Model):
 
 class Jadwal(models.Model):
     METODE_PEMBELAJARAN_CHOICES = (
-        ('luring', 'Luring'),
-        ('daring', 'Daring')
+        ('Luring', 'Luring'),
+        ('Daring', 'Daring')
     )
     HARI_CHOICES = (
-        ('senin', 'Senin'),
-        ('selasa', 'Selasa'),
-        ('rabu', 'Rabu'),
-        ('kamis', 'Kamis'),
-        ('jumat', 'Jumat'),
-        ('sabtu', 'Sabtu'),
+        ('Senin', 'Senin'),
+        ('Selasa', 'Selasa'),
+        ('Rabu', 'Rabu'),
+        ('Kamis', 'Kamis'),
+        ('Jumat', 'Jumat'),
+        ('Sabtu', 'Sabtu'),
     )
 
     JURUSAN_CHOICES = (
@@ -65,14 +65,14 @@ class Jadwal(models.Model):
     )
 
     SEMESTER_CHOICES = (
-        ('semester1', 'Semester 1'),
-        ('semester2', 'Semester 2'),
-        ('semester3', 'Semester 3'),
-        ('semester4', 'Semester 4'),
-        ('semester5', 'Semester 5'),
-        ('semester6', 'Semester 6'),
-        ('semester7', 'Semester 7'),
-        ('semester8', 'Semester 8'),
+        ('Semester1', 'Semester 1'),
+        ('Semester2', 'Semester 2'),
+        ('Semester3', 'Semester 3'),
+        ('Semester4', 'Semester 4'),
+        ('Semester5', 'Semester 5'),
+        ('Semester6', 'Semester 6'),
+        ('Semester7', 'Semester 7'),
+        ('Semester8', 'Semester 8'),
         # Tambahkan pilihan semester lainnya sesuai kebutuhan
     )
 

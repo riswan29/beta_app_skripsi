@@ -45,6 +45,95 @@
 
     <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
     <link rel="stylesheet" href="{% static 'css/colors/default.css' %}" id="colorSkinCSS">
+    <style>
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Menggunakan tinggi viewport untuk membuat sidebar menyesuaikan tinggi layar */
+            width: 250px;
+            /* Menentukan lebar sidebar */
+            margin: 0 auto;
+            /* Mengatur jarak kiri dan kanan sidebar agar berada di tengah */
+            background-color: #fbf6f0;
+            /* Mengatur warna latar belakang sidebar */
+        }
+
+        /* Ganti tampilan logo dan menu menjadi lebih kompak */
+        .logo,
+        #sidebar_menu li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .nav_title {
+            flex-grow: 1;
+            /* Menyesuaikan panjang menu dengan panjang teks */
+        }
+
+        /* Ganti tampilan ikon dan teks pada menu */
+        #sidebar_menu li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+        }
+
+        #sidebar_menu li ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #fff;
+            /* Mengatur warna latar belakang dropdown */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Mengatur bayangan pada dropdown */
+        }
+
+        /* Menampilkan dropdown saat menu utama di-hover */
+        #sidebar_menu li:hover ul {
+            display: block;
+        }
+
+        /* Mengatur tampilan item dropdown */
+        #sidebar_menu li ul li {
+            display: block;
+        }
+
+        #sidebar_menu li {
+            position: relative;
+        }
+
+        #sidebar_menu li ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            /* Menyesuaikan lebar dropdown dengan panjang teks */
+        }
+
+        /* Menampilkan dropdown saat menu utama di-hover */
+        #sidebar_menu li:hover ul {
+            display: block;
+        }
+
+        /* Mengatur tampilan item dropdown */
+        #sidebar_menu li ul li {
+            display: block;
+        }
+    </style>
 </head>
 
 <body class="crm_body_bg">
@@ -52,8 +141,8 @@
     <!-- start navbar -->
     <nav class="sidebar">
         <div class="logo d-flex justify-content-between">
-            <a class="large_logo" href="index.html"><img src="{% static 'img/logo.png'%}" alt></a>
-            <a class="small_logo" href="index.html"><img src="{% static 'img/mini_logo.png'%}" alt></a>
+            <a class="large_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" alt></a>
+            <a class="small_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" alt></a>
             <div class="sidebar_close_icon d-lg-none">
                 <i class="ti-close"></i>
             </div>
@@ -91,26 +180,6 @@
                 <ul>
                     <li><a href="{% url 'buat_tugas' %}">Buat Tugas</a></li>
                     <li><a href="{% url 'halaman_tugas_dosen' %}">List Tugas</a></li>
-                    <li><a href="chat.html">Pengirim</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                </ul>
-            </li>
-            <li class>
-                <a class="has-arrow" href="#" aria-expanded="false">
-                    <div class="nav_icon_small">
-                        <img src="{% static 'img/menu-icon/16.svg'%}" alt>
-                    </div>
-                    <div class="nav_title">
-                        <span>Pages</span>
-                    </div>
-                </a>
-                <ul>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="resister.html">Register</a></li>
-                    <li><a href="error_400.html">Error 404</a></li>
-                    <li><a href="error_500.html">Error 500</a></li>
-                    <li><a href="forgot_pass.html">Forgot Password</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
                 </ul>
             </li>
         </ul>

@@ -43,6 +43,85 @@
 
     <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
     <link rel="stylesheet" href="{% static 'css/colors/default.css' %}" id="colorSkinCSS">
+    <style>
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Menggunakan tinggi viewport untuk membuat sidebar menyesuaikan tinggi layar */
+            width: 250px; /* Menentukan lebar sidebar */
+            margin: 0 auto; /* Mengatur jarak kiri dan kanan sidebar agar berada di tengah */
+            background-color: #fbf6f0; /* Mengatur warna latar belakang sidebar */
+        }
+
+        /* Ganti tampilan logo dan menu menjadi lebih kompak */
+        .logo,
+        #sidebar_menu li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .nav_title {
+            flex-grow: 1; /* Menyesuaikan panjang menu dengan panjang teks */
+        }
+        /* Ganti tampilan ikon dan teks pada menu */
+        #sidebar_menu li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+        }
+
+        #sidebar_menu li ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #fff; /* Mengatur warna latar belakang dropdown */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Mengatur bayangan pada dropdown */
+        }
+
+        /* Menampilkan dropdown saat menu utama di-hover */
+        #sidebar_menu li:hover ul {
+            display: block;
+        }
+
+        /* Mengatur tampilan item dropdown */
+        #sidebar_menu li ul li {
+            display: block;
+        }
+        #sidebar_menu li {
+            position: relative;
+        }
+
+        #sidebar_menu li ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 400px; /* Menyesuaikan lebar dropdown dengan panjang teks */
+        }
+
+        /* Menampilkan dropdown saat menu utama di-hover */
+        #sidebar_menu li:hover ul {
+            display: block;
+        }
+
+        /* Mengatur tampilan item dropdown */
+        #sidebar_menu li ul li {
+            display: block;
+        }
+    </style>
+
 </head>
 
 <body class="crm_body_bg">
@@ -51,8 +130,8 @@
 
     <nav class="sidebar">
         <div class="logo d-flex justify-content-between">
-            <a class="large_logo" href="index.html"><img src="{% static 'img/logo.png'%}" alt></a>
-            <a class="small_logo" href="index.html"><img src="{% static 'img/mini_logo.png'%}" alt></a>
+            <a class="large_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" alt></a>
+            <a class="small_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" alt></a>
             <div class="sidebar_close_icon d-lg-none">
                 <i class="ti-close"></i>
             </div>
@@ -90,26 +169,6 @@
                 <ul>
                     <li><a href="{% url 'buat_tugas' %}">Buat Tugas</a></li>
                     <li><a href="{% url 'halaman_tugas_dosen' %}">List Tugas</a></li>
-                    <li><a href="chat.html">Pengirim</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                </ul>
-            </li>
-            <li class>
-                <a class="has-arrow" href="#" aria-expanded="false">
-                    <div class="nav_icon_small">
-                        <img src="{% static 'img/menu-icon/16.svg'%}" alt>
-                    </div>
-                    <div class="nav_title">
-                        <span>Pages</span>
-                    </div>
-                </a>
-                <ul>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="resister.html">Register</a></li>
-                    <li><a href="error_400.html">Error 404</a></li>
-                    <li><a href="error_500.html">Error 500</a></li>
-                    <li><a href="forgot_pass.html">Forgot Password</a></li>
-                    <li><a href="gallery.html">Gallery</a></li>
                 </ul>
             </li>
         </ul>
@@ -301,8 +360,7 @@
                                     <div class="white_card_header">
                                         <div class="box_header m-0">
                                             <div class="main-title">
-                                                <h3 class="m-0">Running Campain</h3>
-                                                <span>Overview</span>
+                                                <h3 class="m-0">Jadwal Mengajar</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -312,380 +370,72 @@
                                             <table class="table lms_table_active2 p-0">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">Campain</th>
-                                                        <th scope="col">Start Time</th>
-                                                        <th scope="col">Company</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Action</th>
+                                                        <th scope="col">Nama Mata Kuliah</th>
+                                                        <th scope="col">Hari</th>
+                                                        <th scope="col">Jam</th>
+                                                        <th scope="col">Ruangan</th>
+                                                        <th scope="col">Kode Mata Kuliah</th>
+                                                        <th scope="col">SKS</th>
+                                                        <th scope="col">Jurusan</th>
+                                                        <th scope="col">Semester</th>
+                                                        <th scope="col">Metode Pembelajaran</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {% for jadwal in jadwal %}
                                                     <tr>
                                                         <td>
                                                             <div class="customer d-flex align-items-center">
-                                                                <div class="social_media">
-                                                                    <i class="fab fa-facebook-f"></i>
-                                                                </div>
                                                                 <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Facebook Promotion
+                                                                    <h3 class="f_s_18 f_w_900 mb-0">
+                                                                        {{ jadwal.nama_mata_kuliah }}
                                                                     </h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_8">Unique
-                                                                        Watch</span>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
+                                                                <h3 class="f_s_18 f_w_900 mb-0">{{ jadwal.hari }}</h3>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">
+                                                                    {{ jadwal.waktu}}-{{ jadwal.waktu_selesai }}</h3>
                                                             </div>
                                                         </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active">Active</a>
+                                                        <td>
+                                                            <div>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.ruangan}}</h3>
+                                                            </div>
                                                         </td>
                                                         <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
+                                                            <div>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.kode_mata_kuliah}}</h3>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.sks}}</h3>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.jurusan}}</h3>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.semester}}</h3>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.metode_pembelajaran}}</h3>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media insta_bg">
-                                                                    <i class="fab fa-instagram"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Instagram</h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_9">Unique
-                                                                        Watch</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active2">Posed</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media twitter_bg">
-                                                                    <i class="fab fa-twitter"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Twitter</h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_10">Unique
-                                                                        Watch</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active3">Closed</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media youtube_bg">
-                                                                    <i class="fab fa-youtube"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Youtube</h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_11">Summer
-                                                                        Campain</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active4">End soon</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 white_card_body pt_25">
-                                    <div class="project_complete">
-                                        <div class="single_pro d-flex">
-                                            <div class="probox"></div>
-                                            <div class="box_content">
-                                                <h4>5685</h4>
-                                                <span>Project completed</span>
-                                            </div>
-                                        </div>
-                                        <div class="single_pro d-flex">
-                                            <div class="probox blue_box"></div>
-                                            <div class="box_content">
-                                                <h4 class="bluish_text">5685</h4>
-                                                <span class="grayis_text">Project completed</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-12">
-                        <div class="white_card card_height_100 mb_30 ">
-                            <div class="row">
-                                <div class="col-lg-9">
-                                    <div class="white_card_header">
-                                        <div class="box_header m-0">
-                                            <div class="main-title">
-                                                <h3 class="m-0">Running Campain</h3>
-                                                <span>Overview</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="white_card_body QA_section">
-                                        <div class="QA_table ">
-
-                                            <table class="table lms_table_active2 p-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Campain</th>
-                                                        <th scope="col">Start Time</th>
-                                                        <th scope="col">Company</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media">
-                                                                    <i class="fab fa-facebook-f"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Facebook Promotion
-                                                                    </h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_8">Unique
-                                                                        Watch</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active">Active</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media insta_bg">
-                                                                    <i class="fab fa-instagram"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Instagram</h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_9">Unique
-                                                                        Watch</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active2">Posed</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media twitter_bg">
-                                                                    <i class="fab fa-twitter"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Twitter</h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_10">Unique
-                                                                        Watch</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active3">Closed</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="customer d-flex align-items-center">
-                                                                <div class="social_media youtube_bg">
-                                                                    <i class="fab fa-youtube"></i>
-                                                                </div>
-                                                                <div class="ml_18">
-                                                                    <h3 class="f_s_18 f_w_900 mb-0">Youtube</h3>
-                                                                    <span class="f_s_12 f_w_700 text_color_11">Summer
-                                                                        Campain</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">08:32</h3>
-                                                                <span
-                                                                    class="f_s_12 f_w_700 color_text_3">12.12.2022</span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">H&G Fashion</h3>
-                                                                <span class="f_s_12 f_w_500 color_text_3">Fashion and
-                                                                    design</span>
-                                                            </div>
-                                                        </td>
-                                                        <td class="f_s_14 f_w_400 color_text_3">
-                                                            <a href="#" class="badge_active4">End soon</a>
-                                                        </td>
-                                                        <td>
-                                                            <div class="action_btns d-flex">
-                                                                <a href="#" class="action_btn mr_10"> <i
-                                                                        class="far fa-edit"></i> </a>
-                                                                <a href="#" class="action_btn"> <i
-                                                                        class="fas fa-trash"></i> </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                    {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
