@@ -120,7 +120,7 @@ def dosenProfile(request):
 
 def edit_dosen_profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
-
+    print(user_profile.gambar)
     if request.method == 'POST':
         form = UserProfileEditForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
@@ -128,6 +128,7 @@ def edit_dosen_profile(request):
             new_username = request.POST.get('username')  # Mendapatkan username baru dari request
             user_profile.update_username(new_username)  # Memperbarui username pada UserProfile
             return redirect('profile_dsn')
+
     else:
         form = UserProfileEditForm(instance=user_profile)
 
