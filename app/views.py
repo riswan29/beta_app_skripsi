@@ -98,6 +98,7 @@ def dosen(request):
     jadwal = Jadwal.objects.filter(dosen=user_profile)
     print(jadwal)
     context = {
+        'user_profile':user_profile,
         'jadwal': jadwal
     }
     return render(request, 'dosen/dashboard.html',context)
@@ -213,6 +214,7 @@ def change_password(request):
     return render(request, 'mahasiswa/ganti.html', {'form': form})
 
 def buat_tugas(request):
+    user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
         form = TugasForm(request.POST, request.FILES, current_user=request.user)
         if form.is_valid():
@@ -224,6 +226,7 @@ def buat_tugas(request):
         form = TugasForm(current_user=request.user)
 
     context = {
+        'user_profile': user_profile,
         'form': form
     }
 
@@ -255,7 +258,10 @@ def tampil_tugas(request):
     # Filter objek Tugas sesuai dengan jurusan dan semester pengguna
     tugas = Tugas.objects.filter(jurusan=jurusan, semester=semester)
     print(tugas)
-    context = {'tugas': tugas}
+    context = {
+        'tugas': tugas,
+        'user_profile': user_profile
+        }
     return render(request, 'mahasiswa/tampil_tugas.html', context)
 
 def kirim_tugas(request, tugas_id):
@@ -286,12 +292,19 @@ def berhasil_kirim_tugas(request, tampung_id):
 def halaman_tugas_dosen(request):
     user_profile = UserProfile.objects.get(user=request.user)
     tugas_dosen = Tugas.objects.filter(nama_pengguna=user_profile)
-    context = {'tugas_dosen': tugas_dosen}
+    context = {
+        'tugas_dosen': tugas_dosen,
+        'user_profile': user_profile
+        }
     return render(request, 'dosen/halaman_tugas_dosen.html', context)
 
 def detail_tugas(request, tugas_id):
+    user_profile = UserProfile.objects.get(user=request.user)
     tugas = get_object_or_404(Tugas, id=tugas_id)
-    context = {'tugas': tugas}
+    context = {
+        'tugas': tugas,
+        'user_profile': user_profile
+        }
     return render(request, 'dosen/detail_tugas.html', context)
 # buat view untuk hapus tugas
 from django.contrib import messages

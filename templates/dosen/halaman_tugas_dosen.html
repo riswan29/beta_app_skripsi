@@ -117,7 +117,7 @@
                                 </li>
                             </div>
                             <div class="profile_info">
-                                <img src="{% static 'img/client_img.png'%}" alt="#">
+                                <img src="{{ user_profile.gambar.url }}" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
                                         <p>{{user.username}}</p>
@@ -162,7 +162,7 @@
                                                 </div>
                                             </div>
                                             <div class="add_button ms-2">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#addcategory"
+                                                <a href="{% url 'buat_tugas' %}"
                                                     class="btn_1">Add New</a>
                                             </div>
                                         </div>

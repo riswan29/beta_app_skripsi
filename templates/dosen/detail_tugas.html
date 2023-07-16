@@ -117,7 +117,7 @@
                                 </li>
                             </div>
                             <div class="profile_info">
-                                <img src="{% static 'img/client_img.png'%}" alt="#">
+                                <img src="{{ user_profile.gambar.url }}" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
                                         <p>{{user.username}}</p>

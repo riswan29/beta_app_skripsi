@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from .key import Keys
 from django.http import HttpResponse
+from app.models import UserProfile
 
 openai.api_key = Keys
 
@@ -22,6 +23,7 @@ ITEMS_PER_PAGE = 5  # Jumlah item yang ditampilkan per halaman
 
 @login_required(login_url="login")
 def homeBot(request):
+    user_profile = UserProfile.objects.get(user=request.user)
     if request.method == "POST":
         prompt = request.POST.get("prompt")
         model_engine = "text-davinci-003"
@@ -79,6 +81,7 @@ def homeBot(request):
             "searches": search_history,
             "page": page,
             "search_query": search_query,
+            'user_profile': user_profile
         }
 
         return render(request, "indexx.html", context)
