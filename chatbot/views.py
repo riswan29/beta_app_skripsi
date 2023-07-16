@@ -8,8 +8,9 @@ from .models import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .key import Keys
+import datetime
 from django.http import HttpResponse
-from app.models import UserProfile
+from app.models import UserProfile, Jadwal
 
 openai.api_key = Keys
 
@@ -23,68 +24,76 @@ ITEMS_PER_PAGE = 5  # Jumlah item yang ditampilkan per halaman
 
 @login_required(login_url="login")
 def homeBot(request):
-    user_profile = UserProfile.objects.get(user=request.user)
     if request.method == "POST":
         prompt = request.POST.get("prompt")
         model_engine = "text-davinci-003"
 
-        completions = openai.Completion.create(
-            engine=model_engine,
-            prompt=prompt,
-            max_tokens=1024,
-            n=1,
-            temperature=0.5,
-        )
-        message = completions.choices[0].text
+        if prompt.startswith("/jadwaldosen"):
+            # Ambil hari saat ini
+            today = datetime.datetime.now().strftime("%A")
+            # Ambil jadwal dosen untuk hari ini dari model Jadwal
+            jadwal_hari_ini = Jadwal.objects.filter(hari=today)
 
-        # Save the prompt and response to the database
-        chat_history = ChatHistory(user=request.user, prompt=prompt, message=message)
-        chat_history.save()
+            # Buat pesan balasan dengan jadwal semua dosen
+            response = "Jadwal dosen hari ini:\n"
+            if jadwal_hari_ini.exists():
+                for jadwal in jadwal_hari_ini:
+                    response += f"Dosen: {jadwal.dosen.full_name}\n"
+                    response += f"Hari: {jadwal.hari}\n"
+                    response += f"Jam: {jadwal.waktu} - {jadwal.waktu_selesai}\n"
+                    response += f"Mata Kuliah: {jadwal.nama_mata_kuliah}\n"
+                    response += f"Ruangan: {jadwal.ruangan}\n"
+                    response += "\n"
+            else:
+                response = "Tidak ada jadwal dosen hari ini."
 
-        # Add the prompt and response to the session messages
-        session_messages.append({"sender": "user", "content": prompt})
-        session_messages.append({"sender": "bot", "content": message})
+            chat_history = ChatHistory(user=request.user, prompt=prompt, message=response)
+            chat_history.save()
 
-        # Display the user's search history
-        search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
-        paginator = Paginator(search_history, ITEMS_PER_PAGE)
-        page_number = request.GET.get("page", 1)
-        page = paginator.get_page(page_number)
+            session_messages.append({"sender": "user", "content": prompt})
+            session_messages.append({"sender": "bot", "content": response})
+        else:
+            completions = openai.Completion.create(
+                engine=model_engine,
+                prompt=prompt,
+                max_tokens=1024,
+                n=1,
+                temperature=0.5,
+            )
+            response = completions.choices[0].text
 
-        context = {
-            "messages": session_messages,
-            "searches": search_history,
-            "page": page,
-        }
+            chat_history = ChatHistory(user=request.user, prompt=prompt, message=response)
+            chat_history.save()
 
-        return render(request, "indexx.html", context)
-    else:
-        search_query = request.GET.get('search_query')
+            session_messages.append({"sender": "user", "content": prompt})
+            session_messages.append({"sender": "bot", "content": response})
 
-        # Display the user's search history
-        search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
+    search_query = request.GET.get('search_query')
 
-        if search_query:
-            search_history = search_history.filter(Q(prompt__icontains=search_query) | Q(message__icontains=search_query))
+    # Display the user's search history
+    search_history = ChatHistory.objects.filter(user=request.user).order_by("-id")
 
-        paginator = Paginator(search_history, ITEMS_PER_PAGE)
-        page_number = request.GET.get("page", 1)
-        page = paginator.get_page(page_number)
+    if search_query:
+        search_history = search_history.filter(Q(prompt__icontains=search_query) | Q(message__icontains=search_query))
 
-        # Limit jumlah history yang ditampilkan sesuai halaman yang dipilih
-        start_index = (page.number - 1) * ITEMS_PER_PAGE
-        end_index = start_index + ITEMS_PER_PAGE
-        search_history = page[start_index:end_index]
+    paginator = Paginator(search_history, ITEMS_PER_PAGE)
+    page_number = request.GET.get("page", 1)
+    page = paginator.get_page(page_number)
 
-        context = {
-            "messages": session_messages,
-            "searches": search_history,
-            "page": page,
-            "search_query": search_query,
-            'user_profile': user_profile
-        }
+    # Limit jumlah history yang ditampilkan sesuai halaman yang dipilih
+    start_index = (page.number - 1) * ITEMS_PER_PAGE
+    end_index = start_index + ITEMS_PER_PAGE
+    search_history = page[start_index:end_index]
 
-        return render(request, "indexx.html", context)
+    context = {
+        "messages": session_messages,
+        "searches": search_history,
+        "page": page,
+        "search_query": search_query,
+    }
+
+    return render(request, "indexx.html", context)
+
 
 @login_required(login_url="login")
 def newChat(request):
