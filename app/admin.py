@@ -1,6 +1,12 @@
 from django.contrib import admin
 from .models import *
-# Register your models here.
+from django.contrib import admin
+
+class CustomAdminSite(admin.AdminSite):
+    admin.site.site_header = 'Selamat datang di Halaman Admin'
+    admin.site.site_title = 'Halaman Admin'
+    admin.site.index_title = 'Selamat datang di Halaman Admin'
+admin_site = CustomAdminSite()
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'user', 'role', 'nim_nidn')
