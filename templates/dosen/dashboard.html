@@ -1,5 +1,4 @@
 {% load static %}
-
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Analytic</title>
-    <link rel="icon" href="img/mini_logo.png" type="{% static 'image/png'%}">
+    <link rel="icon" href="img/unefa.png" type="{% static 'image/png'%}">
 
     <link rel="stylesheet" href="{% static 'css/bootstrap1.min.css' %}" />
 
@@ -43,85 +42,6 @@
 
     <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
     <link rel="stylesheet" href="{% static 'css/colors/default.css' %}" id="colorSkinCSS">
-    <style>
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Menggunakan tinggi viewport untuk membuat sidebar menyesuaikan tinggi layar */
-            width: 250px; /* Menentukan lebar sidebar */
-            margin: 0 auto; /* Mengatur jarak kiri dan kanan sidebar agar berada di tengah */
-            background-color: #fbf6f0; /* Mengatur warna latar belakang sidebar */
-        }
-
-        /* Ganti tampilan logo dan menu menjadi lebih kompak */
-        .logo,
-        #sidebar_menu li {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-        }
-        .nav_title {
-            flex-grow: 1; /* Menyesuaikan panjang menu dengan panjang teks */
-        }
-        /* Ganti tampilan ikon dan teks pada menu */
-        #sidebar_menu li a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-        }
-
-        #sidebar_menu li ul {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            display: none;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            background-color: #fff; /* Mengatur warna latar belakang dropdown */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Mengatur bayangan pada dropdown */
-        }
-
-        /* Menampilkan dropdown saat menu utama di-hover */
-        #sidebar_menu li:hover ul {
-            display: block;
-        }
-
-        /* Mengatur tampilan item dropdown */
-        #sidebar_menu li ul li {
-            display: block;
-        }
-        #sidebar_menu li {
-            position: relative;
-        }
-
-        #sidebar_menu li ul {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            display: none;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 400px; /* Menyesuaikan lebar dropdown dengan panjang teks */
-        }
-
-        /* Menampilkan dropdown saat menu utama di-hover */
-        #sidebar_menu li:hover ul {
-            display: block;
-        }
-
-        /* Mengatur tampilan item dropdown */
-        #sidebar_menu li ul li {
-            display: block;
-        }
-    </style>
-
 </head>
 
 <body class="crm_body_bg">
@@ -130,8 +50,8 @@
 
     <nav class="sidebar">
         <div class="logo d-flex justify-content-between">
-            <a class="large_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" alt></a>
-            <a class="small_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" alt></a>
+            <a class="large_logo" href="{% url 'dosen' %}"><img src="{% static 'img/unefa.png'%}" style="align-items: center;"><br><br><center><p style="color: black; font-family:fantasy; font-size:20px;">Welcome {{user.username}}<p></center></a>
+            <a class="small_logo" href="index.html"><img src="{% static 'img/unefa3.png'%}" alt></a>
             <div class="sidebar_close_icon d-lg-none">
                 <i class="ti-close"></i>
             </div>
@@ -253,7 +173,7 @@
                                     <div class="profile_info_details">
                                         <a href="#">My Profile </a>
                                         <a href="#">Settings</a>
-                                        <a href="#">Log Out </a>
+                                        <a href="{% url 'logout' %}">Log Out </a>
                                     </div>
                                 </div>
                             </div>
@@ -497,28 +417,27 @@
                 Sunday, 12 January
             </p>
             <div class="CHATING_SENDER">
-                <div class="SMS_thumb">
-                    <img src="img/staf/1.png" alt>
-                </div>
                 <div class="SEND_SMS_VIEW">
-                    <p>Hi! Welcome .
-                        How can I help you?</P>
+                    {% for message in messages %}
+                    {% if message.sender == 'user' %}
+                    <p>{{ message.content }}</p>
                 </div>
             </div>
+            {% elif message.sender == 'bot' %}
             <div class="CHATING_SENDER CHATING_RECEIVEr">
                 <div class="SEND_SMS_VIEW">
-                    <p>Hello</P>
-                </div>
-                <div class="SMS_thumb">
-                    <img src="img/staf/1.png" alt>
+                    <p>{{ message.content }}</P>
                 </div>
             </div>
+            {% endif %}
+            {% endfor %}
         </div>
         <div class="CHAT_POPUP_BOTTOM">
             <div class="chat_input_box d-flex align-items-center">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Write your message"
-                        aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <form method="post" action="{% url 'chatbot' %}">
+                        {% csrf_token %}
+                        <input type="text" placeholder="Write your message" name="prompt" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                         <button class="btn " type="button">
 
