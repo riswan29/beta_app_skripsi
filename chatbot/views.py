@@ -29,29 +29,31 @@ def homeBot(request):
         model_engine = "text-davinci-003"
 
         if prompt.startswith("/jadwaldosen"):
-            # Ambil hari saat ini
-            today = datetime.datetime.now().strftime("%A")
-            # Ambil jadwal dosen untuk hari ini dari model Jadwal
-            jadwal_hari_ini = Jadwal.objects.filter(hari=today)
-
-            # Buat pesan balasan dengan jadwal semua dosen
-            response = "Jadwal dosen hari ini:\n"
-            if jadwal_hari_ini.exists():
-                for jadwal in jadwal_hari_ini:
-                    response += f"Dosen: {jadwal.dosen.full_name}\n"
-                    response += f"Hari: {jadwal.hari}\n"
-                    response += f"Jam: {jadwal.waktu} - {jadwal.waktu_selesai}\n"
-                    response += f"Mata Kuliah: {jadwal.nama_mata_kuliah}\n"
-                    response += f"Ruangan: {jadwal.ruangan}\n"
-                    response += "\n"
+            # Mendapatkan hari dari prompt
+            hari = prompt.split()[1].capitalize()
+            # Memeriksa apakah hari yang dimasukkan valid
+            valid_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
+            if hari not in valid_hari:
+                response = "Hari yang dimasukkan tidak valid. Silakan coba lagi."
             else:
-                response = "Tidak ada jadwal dosen hari ini."
+                # Ambil jadwal dosen untuk hari yang ditentukan
+                jadwal_hari_ini = Jadwal.objects.filter(hari=hari)
 
-            chat_history = ChatHistory(user=request.user, prompt=prompt, message=response)
-            chat_history.save()
+                # Buat pesan balasan dengan jadwal semua dosen
+                response = f"Jadwal dosen hari {hari}:<br>"
+                if jadwal_hari_ini.exists():
+                    for jadwal in jadwal_hari_ini:
+                        response += f"Dosen:<b> {jadwal.dosen.full_name}</b><br>"
+                        response += f"Hari: {jadwal.hari}<br>"
+                        response += f"Jam: {jadwal.waktu} - {jadwal.waktu_selesai}<br>"
+                        response += f"Mata Kuliah: {jadwal.nama_mata_kuliah}<br>"
+                        response += f"Ruangan: {jadwal.ruangan}<br>"
+                        response += "\n"
+                else:
+                    response = f"Tidak ada jadwal dosen hari {hari}."
 
-            session_messages.append({"sender": "user", "content": prompt})
-            session_messages.append({"sender": "bot", "content": response})
+                session_messages.append({"sender": "user", "content": prompt})
+                session_messages.append({"sender": "bot", "content": response})
         else:
             completions = openai.Completion.create(
                 engine=model_engine,
