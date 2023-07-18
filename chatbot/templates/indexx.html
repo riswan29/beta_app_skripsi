@@ -222,36 +222,50 @@
                                         <div class="single_message_chat">
                                             <div class="message_pre_left">
                                                 <div class="messges_info">
-                                                    <h4>{{user.username}}</h4>
+                                                    <h4>{{ user.username }}</h4>
                                                 </div>
                                             </div>
                                             <div class="message_content_view red_border">
-                                                {{ message.content }}
+                                                {{ message.content|safe }}
                                             </div>
                                         </div>
                                         {% elif message.sender == 'bot' %}
                                         <div class="single_message_chat sender_message">
                                             <div class="message_pre_left">
                                                 <div class="messges_info">
-                                                    <h4>Bot Assistent</h4>
+                                                    <h4>Bot Assistant</h4>
                                                 </div>
                                             </div>
                                             <div class="message_content_view">
-                                                {{ message.content }}
+                                                {{ message.content|safe }}
                                             </div>
                                         </div>
-
                                         {% endif %}
                                         {% endfor %}
+                                        <!-- Pastikan pesan yang diketikkan oleh pengguna tetap ada di halaman chatbot -->
+                                        {% if prompt %}
+                                        <div class="single_message_chat">
+                                            <div class="message_pre_left">
+                                                <div class="messges_info">
+                                                    <h4>{{ user.username }}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="message_content_view red_border">
+                                                {{ prompt }}
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                         <div class="message_send_field">
                                             <form method="post" action="{% url 'chatbot' %}">
                                                 {% csrf_token %}
                                                 <input type="text" placeholder="Write your message" name="prompt">
-                                                <input type="submit" class="btn_1" value="Cari">
+                                                <input type="submit" class="btn_1" name="submit" value="Cari">
+                                            </form>
                                         </div>
                                     </div>
                                 </ul>
                             </div>
+
                         </div>
                     </div>
                 </div>
