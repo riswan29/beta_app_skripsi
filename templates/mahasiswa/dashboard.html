@@ -95,7 +95,6 @@
 
     <!-- end navbar -->
     <section class="main_content dashboard_part large_header_bg">
-
         <div class="container-fluid g-0">
             <div class="row">
                 <div class="col-lg-12 p-0 ">
@@ -245,7 +244,7 @@
                                     <div class="white_card_header">
                                         <div class="box_header m-0">
                                             <div class="main-title">
-                                                <h3 class="m-0">Jadwal Mengajar</h3>
+                                                <h3 class="m-0">Tugas Terbaru</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -255,68 +254,32 @@
                                             <table class="table lms_table_active2 p-0">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">Nama Mata Kuliah</th>
-                                                        <th scope="col">Hari</th>
-                                                        <th scope="col">Jam</th>
-                                                        <th scope="col">Ruangan</th>
-                                                        <th scope="col">Kode Mata Kuliah</th>
-                                                        <th scope="col">SKS</th>
-                                                        <th scope="col">Jurusan</th>
-                                                        <th scope="col">Semester</th>
-                                                        <th scope="col">Metode Pembelajaran</th>
+                                                        <th scope="col">Nama Tugas</th>
+                                                        <th scope="col">Deadline</th>
+                                                        <th scope="col">File</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for jadwal in jadwal %}
+                                                    {% for tugas in tugas %}
                                                     <tr>
                                                         <td>
                                                             <div class="customer d-flex align-items-center">
                                                                 <div class="ml_18">
                                                                     <h3 class="f_s_18 f_w_900 mb-0">
-                                                                        {{ jadwal.nama_mata_kuliah }}
+                                                                        {{ tugas.nama_tugas }}
                                                                     </h3>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div>
-                                                                <h3 class="f_s_18 f_w_900 mb-0">{{ jadwal.hari }}</h3>
+                                                                <h3 class="f_s_18 f_w_900 mb-0">{{ tugas.deadline }}</h3>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">
-                                                                    {{ jadwal.waktu}}-{{ jadwal.waktu_selesai }}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.ruangan}}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.kode_mata_kuliah}}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.sks}}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.jurusan}}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.semester}}</h3>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <h3 class="f_s_18 f_w_800 mb-0">{{jadwal.metode_pembelajaran}}</h3>
+                                                                <h3 class="f_s_18 f_w_800 mb-0"><a href="{{ tugas.get_file_url }}">Unduh</a>
+                                                                    </h3>
                                                             </div>
                                                         </td>
                                                     </tr>

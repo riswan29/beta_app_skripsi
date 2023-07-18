@@ -1,5 +1,5 @@
 import os
-
+from django.utils import timezone
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
@@ -12,6 +12,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from .forms import *
 from .models import UserProfile
+from django.contrib.auth.decorators import user_passes_test
+
+
+def is_dosen(user):
+    return user.is_authenticated and user.userprofile.role == 'dosen'
 
 
 def sidebar(request):
@@ -88,7 +93,15 @@ def register(request):
 
 @login_required(login_url="login")
 def mahasiswa(request):
-    return render(request, 'mahasiswa/dashboard.html')
+    user_profile = UserProfile.objects.get(user=request.user)
+    jurusan = user_profile.jurusan
+    semester = user_profile.semester
+    tugas = Tugas.objects.filter(jurusan=jurusan, semester=semester).order_by('-tanggal_dibuat')[:3]
+    context = {
+        'tugas': tugas,
+        'user_profile':user_profile
+    }
+    return render(request, 'mahasiswa/dashboard.html', context)
 
 @login_required(login_url="login")
 def dosen(request):
@@ -168,6 +181,7 @@ def edit_mahasiswa_profile(request):
     }
     return render(request, 'mahasiswa/edit_profile.html', context)
 
+
 @login_required
 def buat_jadwal(request):
     form = BuatJadwalForm()
@@ -212,7 +226,8 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'mahasiswa/ganti.html', {'form': form})
-
+@user_passes_test(is_dosen)
+@login_required(login_url='login')
 def buat_tugas(request):
     user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
