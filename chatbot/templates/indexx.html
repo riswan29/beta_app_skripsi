@@ -64,6 +64,7 @@
             </div>
         </div>
         <ul id="sidebar_menu">
+            {% if user_profile.role == 'dosen' %}
             <li>
                 <a href="{% url 'dosen' %}" aria-expanded="false">
                     <div class="nav_icon_small">
@@ -74,6 +75,18 @@
                     </div>
                 </a>
             </li>
+            {% else %}
+            <li>
+                <a href="{% url 'mahasiswa' %}" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/dashboard.svg'%}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Dasboard</span>
+                    </div>
+                </a>
+            </li>
+            {% endif %}
             <li>
                 <a href="{% url 'chatbot' %}" aria-expanded="false">
                     <div class="nav_icon_small">
@@ -152,8 +165,16 @@
                                         <p>{{user.username}}</p>
                                     </div>
                                     <div class="profile_info_details">
+
+                                        {% if user_profile.role == 'dosen' %}
                                         <a href="{% url 'profile_dsn' %}">My Profile </a>
                                         <a href="{% url 'logout' %}">Log Out </a>
+                                        {% else %}
+                                        <a href="{% url 'profile_mhs' %}">My Profile </a>
+                                        <a href="{% url 'logout' %}">Log Out </a>
+                                        {% endif %}
+
+
                                     </div>
                                 </div>
                             </div>
