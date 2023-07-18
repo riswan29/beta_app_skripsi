@@ -281,7 +281,7 @@ def tampil_tugas(request):
 
 def kirim_tugas(request, tugas_id):
     tugas = get_object_or_404(Tugas, id=tugas_id)
-
+    print(tugas.keterangan)
     if request.method == 'POST':
         file_tugas = request.FILES.get('file_tugas')
         # Lakukan validasi dan penyimpanan file tugas di sini
@@ -296,7 +296,9 @@ def kirim_tugas(request, tugas_id):
         # Redirect ke halaman berhasil mengirim tugas
         return redirect('berhasil_kirim_tugas', tampung_id=tampung_tugas.id)
 
-    context = {'tugas': tugas}
+    context = {
+        'tugas': tugas,
+        }
     return render(request, 'mahasiswa/kirim_tugas.html', context)
 
 def berhasil_kirim_tugas(request, tampung_id):
