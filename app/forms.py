@@ -18,10 +18,11 @@ class RegistrationForm(UserCreationForm):
     jurusan = forms.ChoiceField(choices=UserProfile.JURUSAN_CHOICES)
     semester = forms.ChoiceField(choices=UserProfile.SEMESTER_CHOICES)
     nim_nidn = forms.CharField(max_length=10)
+    gambar = forms.ImageField(label='Gambar Profil', required=False)  # Menambahkan field gambar
 
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2','jurusan', 'semester', 'nim_nidn', 'role']
+        fields = ['username', 'password1', 'password2','jurusan', 'semester', 'nim_nidn', 'role','gambar']
 
 class UserProfileEditForm(forms.ModelForm):
     username = forms.CharField(max_length=150)  # Menambahkan field username

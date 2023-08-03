@@ -9,7 +9,7 @@ class CustomAdminSite(admin.AdminSite):
 admin_site = CustomAdminSite()
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'user', 'role', 'nim_nidn')
+    list_display = ('user', 'role', 'nim_nidn')
     list_filter = ('role',)  # Menambahkan filter berdasarkan role
     search_fields = ('full_name', 'user__username', 'nim_nidn')  # Menambahkan kolom pencarian
     ordering = ('full_name',)

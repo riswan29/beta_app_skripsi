@@ -55,11 +55,10 @@ def login(request):
 
 
 @staff_member_required(login_url='login')  # Hanya superuser atau admin yang dapat mengakses view ini
-@login_required(login_url='login')
+
 def register(request):
-    form = RegistrationForm()
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, request.FILES)  # Tambahkan request.FILES
         if form.is_valid():
             username = form.cleaned_data['username']
             nim_nidn = form.cleaned_data['nim_nidn']
@@ -79,6 +78,7 @@ def register(request):
             # Username dan nim belum terdaftar, simpan objek User dan UserProfile
             user = User.objects.create_user(username=username, password=form.cleaned_data['password1'])
             user_profile = UserProfile(user=user, role=role, nim_nidn=nim_nidn, jurusan=jurusan, semester=semester)
+            user_profile.gambar = form.cleaned_data['gambar']  # Simpan gambar yang diunggah ke model UserProfile
             user_profile.save()
 
             django_login(request, user)
@@ -88,6 +88,9 @@ def register(request):
                 return redirect('login')
             elif role == 'admin':
                 return redirect('login')
+
+    else:
+        form = RegistrationForm()
 
     return render(request, 'register.html', {'form': form})
 

@@ -33,7 +33,7 @@ class UserProfile(models.Model):
     semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
     role = models.CharField(max_length=10, choices=USER_ROLES)
     nim_nidn = models.CharField(max_length=20)
-    gambar = models.ImageField(upload_to='profile_images/', blank=True)
+    gambar = models.ImageField(upload_to='profile_images/')
     alamat = models.TextField(blank=True)
 
 
@@ -124,7 +124,7 @@ class Tugas(models.Model):
     file_tugas = models.FileField(upload_to='tugas_files/')
     jurusan = models.CharField(max_length=50, choices=JURUSAN_CHOICES)
     semester = models.CharField(max_length=20, choices=SEMESTER_CHOICES)
-    
+
 
 
     def __str__(self):
